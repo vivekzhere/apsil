@@ -81,6 +81,7 @@ RType:		INT					{m3=0;
 		;
 		
 fID:		ID					{memcount=1;
+							chkret=-1;
 							funcid=$1;
 							$$=$1;
 							}
@@ -162,7 +163,13 @@ LId:		ID					{Linstall($1,m,1);
 							}
 		;
 
-Body:		 BEGN stmtlist END			{$$=$2;
+Body:		 BEGN stmtlist END			{if(chkret==-1)
+							{
+								printf("\n Missing return statement in function %s()\n",funcid==NULL?"main":funcid->name);
+								exit(0);
+							}
+							else
+								$$=$2;			
 							}
 		;
  	
@@ -186,6 +193,7 @@ stmt:		ids ASG expr ';'	 		{$$=maketree($2,$1,$3,NULL);
 		|WHILE expr DO stmtlist ENDWHILE ';'				{$$=maketree($1,$2,$4,NULL);
 										}		
 		|RETURN expr ';'						{$$=maketree($1,$2,NULL,NULL);
+										chkret=1;
 										}
 		;
 				
