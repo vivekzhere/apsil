@@ -2,7 +2,7 @@
 #define TRUE 1
 #define FALSE 0
 
-int m=-1,m2=-1,m3=-1; //m2-arg, m3 return
+int m=-1,m2=-1,m3=-1; //m-variable type, m2-argtype, m3-returntype of function
 struct tree *funcid=NULL;
 int memcount=0,regcount=0;
 FILE *fp;
@@ -475,7 +475,8 @@ void codegen(struct tree * root)
 				regcount=regcount-2;
 				endfn();
 			}
-				
+			else
+				fprintf(fp,"HALT\n");
 			break;
 		default:
 			return;
