@@ -81,7 +81,6 @@ RType:		INT					{m3=0;
 		;
 		
 fID:		ID					{memcount=1;
-							chkret=-1;
 							funcid=$1;
 							$$=$1;
 							}
@@ -169,7 +168,8 @@ Body:		 BEGN stmtlist END			{if(chkret==-1)
 								exit(0);
 							}
 							else
-								$$=$2;			
+								$$=$2;	
+							chkret=-1;		
 							}
 		;
  	
