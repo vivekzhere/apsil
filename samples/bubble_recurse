@@ -1,0 +1,44 @@
+decl
+	integer a[10],bubblesort(integer n);
+enddecl
+integer bubblesort(integer n)
+{
+decl
+	integer j,k;
+enddecl
+begin
+	if n==1 then
+		return 0;
+	endif;
+	j=0;
+	while j<n-1 do
+		if a[j]<a[j+1] then
+			k=a[j];
+			a[j]=a[j+1];
+			a[j+1]=k;
+		endif;
+		j=j+1;
+	endwhile;
+	
+	return bubblesort(n-1);
+end
+}
+integer main()
+{
+decl
+	integer i;
+enddecl
+begin
+	i=0;
+	while i<10 do
+		a[i]=i;
+		i=i+1;
+	endwhile;
+	i=bubblesort(10);
+	while i<10 do
+		write(a[i]);
+		i=i+1;
+	endwhile;
+	return 0;
+end
+}

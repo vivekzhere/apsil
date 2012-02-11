@@ -1,0 +1,37 @@
+decl
+	integer x,y;
+	integer gcd(integer a,b);
+enddecl
+integer gcd(integer a,b)
+{
+decl
+	integer d,temp;
+enddecl
+begin
+	if(a%b==0) then 
+		x=0;
+		y=1;
+		return b;
+	else
+		d=gcd(b,a%b);		
+		temp=x;
+		x=y;
+		y=temp-y*(a/b);
+		return d;
+	endif;	
+end
+}
+integer main()
+{
+decl
+	integer m,n;
+enddecl
+begin
+	read(m);
+	read(n);
+	write(gcd(m,n));
+	write(x);
+	write(y);
+	return 0;
+end
+}

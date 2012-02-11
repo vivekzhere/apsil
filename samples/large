@@ -1,0 +1,43 @@
+decl
+	integer a,b,c,d;
+enddecl
+integer main(){
+begin
+	a=50;
+	b=4;
+	c=17;
+	d=120;
+	if(a>b) then 
+		if(a>c) then 
+			if(a>d) then 
+				write(a);
+			else	
+				write(d); 
+			endif;
+		else 
+			if(c>d) then 
+			     write(c);
+		     	else 
+		     		write(d); 
+		     	endif;
+		endif;
+	else
+		if(b>c) then
+			 if(b>c) then 
+				if(b>d) then 
+					write(b);
+				else 
+					write(d); 
+				endif;
+			else
+				if(c>d) then 
+					write(c);
+			    	else
+			    		write(d);
+			    	endif; 
+			endif;
+		endif;
+	endif;
+end
+}
+
