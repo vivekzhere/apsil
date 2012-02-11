@@ -190,6 +190,8 @@ void func(int, char, char*, int);
 			
 [(),;\[\]\{\}&]		{return *yytext;}
 
+[/][/].*\n			{}
+
 [ \t\n]			{}
 
 .			{}
