@@ -3,4 +3,4 @@ yacc -d apsil.y
 gcc lex.yy.c y.tab.c -ll
 ./a.out < <program>
 
-./esim sim.asm
+./esim ap.sil
