@@ -236,7 +236,7 @@ param:							{$$=NULL;
 
 int main (void)
 {	
-	fp=fopen("./ap.sim","w");
+	fp=fopen("./ap.sil","w");
 	fprintf(fp,"START\n");
 	fprintf(fp,"MOV SP,0\n");
 	fprintf(fp,"MOV BP,0\n");	
