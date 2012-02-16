@@ -128,8 +128,10 @@ ArgId:		ID					{
 		;		
 				
 Mainblock:	 INT fMAIN '(' ')' '{' LDefblock Body '}'	{codegen($7);
-					 			fprintf(fp,"HALT\n");
+								fprintf(fp,"HALT\n");
 								fclose(fp);
+								if(Droot!=NULL)
+					 				filearea();						
 								//evaluate($7);
 								return(0);
 								}

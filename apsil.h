@@ -16,7 +16,6 @@ struct ArgStruct{
 };
 struct DataStruct{
 	char *string;
-	int bind;
 	struct DataStruct *next;
 };
 struct DataStruct *Droot=NULL;
@@ -93,10 +92,35 @@ struct tree * makedata(struct tree *a)
 	a->value=datacount;
 	datacount++;
 	temp->string=a->name;
-	temp->bind=a->value;
 	temp->next=Droot;
 	Droot=temp;
 	return(a);
+}
+void intodataarea(struct DataStruct *t, FILE *fp)
+{
+	if(t->next!=NULL)
+		intodataarea(t->next,fp);
+	fprintf(fp,"%s\n",t->string);
+}
+void filearea()
+{	
+	FILE *fp2,*fp3;
+	char *bufftemp=(char *) malloc (16);
+	int linecount=0;
+	size_t nbytes;
+	fp3=fopen("./ap.sim","a");
+	fp2=fopen("./ap.sim","r");
+	while(!feof(fp2))
+	{
+		getline(&bufftemp, &nbytes,fp2);
+		linecount++;
+	}
+	while(linecount<513)
+	{
+		fprintf(fp3,"\n");
+		linecount++;
+	}
+	intodataarea(Droot,fp3);		
 }
 /*void displaysymbols()
 {
@@ -429,7 +453,7 @@ void codegen(struct tree * root)
 			regcount++;
 			break;
 		case 's':	//string constants
-			fprintf(fp,"MOV R%d,%d\n",regcount+1,root->value);
+			fprintf(fp,"MOV R%d,%d\n",regcount,root->value);
 			regcount++;
 			break;
 		case 'i':			//variables and array variables
