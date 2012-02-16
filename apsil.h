@@ -350,14 +350,7 @@ void codegen(struct tree * root)
 			fprintf(fp,"MOD R%d,R%d\n",regcount-2,regcount-1);
 			regcount--;
 			break;
-		case '=':
-			if(root->ptr1->ptr1!=NULL)
-				codegen(root->ptr1->ptr1);
-			else
-			{
-				fprintf(fp,"MOV R%d,0\n",regcount);
-				regcount++;
-			}
+		case '=':			
 			if(root->ptr1->Gentry!=NULL)
 				fprintf(fp,"MOV R%d,%d\n",regcount,root->ptr1->Gentry->bind);
 			else
@@ -367,20 +360,17 @@ void codegen(struct tree * root)
 				fprintf(fp,"ADD R%d,R%d\n",regcount,regcount+1);
 			}			
 			regcount++;
-			fprintf(fp,"ADD R%d,R%d\n",regcount-2,regcount-1);
-			regcount--;
+			if(root->ptr1->ptr1!=NULL)
+			{
+				codegen(root->ptr1->ptr1);
+				fprintf(fp,"ADD R%d,R%d\n",regcount-2,regcount-1);
+				regcount--;
+			}
 			codegen(root->ptr2);
 			fprintf(fp,"MOV [R%d],R%d\n",regcount-2,regcount-1);
 			regcount=regcount-2;
 			break;
 		case 'r':	//READ
-			if(root->ptr1->ptr1!=NULL)
-				codegen(root->ptr1->ptr1);
-			else
-			{
-				fprintf(fp,"MOV R%d,0\n",regcount);
-				regcount++;
-			}
 			if(root->ptr1->Gentry!=NULL)
 				fprintf(fp,"MOV R%d,%d\n",regcount,root->ptr1->Gentry->bind);
 			else
@@ -390,8 +380,12 @@ void codegen(struct tree * root)
 				fprintf(fp,"ADD R%d,R%d\n",regcount,regcount+1);
 			}
 			regcount++;
-			fprintf(fp,"ADD R%d,R%d\n",regcount-2,regcount-1);
-			regcount--;
+			if(root->ptr1->ptr1!=NULL)
+			{
+				codegen(root->ptr1->ptr1);
+				fprintf(fp,"ADD R%d,R%d\n",regcount-2,regcount-1);
+				regcount--;
+			}
 			fprintf(fp,"IN R%d\n",regcount);
 			regcount++;
 			fprintf(fp,"MOV [R%d],R%d\n",regcount-2,regcount-1);
@@ -407,13 +401,6 @@ void codegen(struct tree * root)
 			regcount++;
 			break;
 		case 'i':			//variables and array variables
-			if(root->ptr1!=NULL)
-				codegen(root->ptr1);
-			else
-			{
-				fprintf(fp,"MOV R%d,0\n",regcount);
-				regcount++;
-			}
 			if(root->Gentry!=NULL)
 				fprintf(fp,"MOV R%d,%d\n",regcount,root->Gentry->bind);
 			else
@@ -423,8 +410,12 @@ void codegen(struct tree * root)
 				fprintf(fp,"ADD R%d,R%d\n",regcount,regcount+1);
 			}
 			regcount++;
-			fprintf(fp,"ADD R%d,R%d\n",regcount-2,regcount-1);
-			regcount--;
+			if(root->ptr1!=NULL)
+			{
+				codegen(root->ptr1);
+				fprintf(fp,"ADD R%d,R%d\n",regcount-2,regcount-1);
+				regcount--;
+			}
 			fprintf(fp,"MOV R%d,[R%d]\n",regcount-1,regcount-1);
 			break;
 		case '?':	//IF statement , IF-ELSE statements
