@@ -188,7 +188,8 @@ void func(int, char, char*, int);
 [a-zA-Z][a-zA-Z0-9]*	{
 			func(-1,'i',yytext,-1);
 			return ID;
-			}				
+			}	
+						
 [\"].*[\"]		{func(3,'s',yytext,-1);
 			return STRING;
 			}

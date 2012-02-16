@@ -38,6 +38,8 @@ Type:		INT					{m=0;
 							}
 		|BOOL					{m=1;
 							}
+		|STR					{m=3;
+							}
 		;		
 GIdList:	 GId					{}
 
@@ -78,6 +80,8 @@ RType:		INT					{m3=0;
 							}
 		|BOOL					{m3=1;
 							}
+		|STR					{m3=3;
+							}
 		;
 		
 fID:		ID					{memcount=1;
@@ -106,6 +110,8 @@ ArgType:	INT					{m2=0;
 							}
 		|BOOL					{m2=1;
 							}
+		|STR					{m2=3;
+							}
 		;
 		
 ArgIdList:	 ArgId					{$$=$1;
@@ -120,12 +126,7 @@ ArgId:		ID					{
 		|'&' ID					{$$=makearg($2->name,m2,1);
 							}
 		;		
-		
-		
-		
-		
-
-		
+				
 Mainblock:	 INT fMAIN '(' ')' '{' LDefblock Body '}'	{codegen($7);
 					 			fprintf(fp,"HALT\n");
 								fclose(fp);
@@ -214,6 +215,8 @@ expr:		expr OPER1 expr				{$$=maketree($2,$1,$3,NULL);
 		|NUM					{$$=$1;
 							}
 		|BNUM					{$$=$1;
+							}
+		|STRING					{$$=makedata($1);
 							}
 		|ids					{$$=$1;
 							}

@@ -5,7 +5,7 @@
 int m=-1,m2=-1,m3=-1; //m-variable type, m2-argtype, m3-returntype of function
 int chkret=-1;
 struct tree *funcid=NULL;
-int memcount=0,regcount=0;
+int memcount=0,regcount=0,datacount=512;
 FILE *fp;
 
 struct ArgStruct{
@@ -98,7 +98,6 @@ struct tree * makedata(struct tree *a)
 	Droot=temp;
 	return(a);
 }
-
 /*void displaysymbols()
 {
 	struct symbol *temp=root;
@@ -110,9 +109,6 @@ struct tree * makedata(struct tree *a)
 	}
 	printf("\n");
 }*/
-
-
-
 int evaluate(struct tree * root)
 {
 	int n;
