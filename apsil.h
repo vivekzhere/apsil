@@ -506,6 +506,12 @@ void codegen(struct tree * root)
 			pushargs(root->ptr1);
 			fprintf(fp,"PUSH R0\nCALL fn%d\n",root->Gentry->bind);
 			fprintf(fp,"POP R%d\n",n);
+			if(root->Gentry->type==3)
+			{
+				fprintf(fp,"MOV R%d,1\n",n);
+				fprintf(fp,"MOV R%d,SP\n",n+1);
+				fprintf(fp,"ADD R%d,R%d\n",n,n+1);
+			}			
 			popargs(root->ptr1,root->Gentry->arglist,n);
 			while(regcount<n)
 			{
@@ -520,7 +526,10 @@ void codegen(struct tree * root)
 				codegen(root->ptr1);
 				fprintf(fp,"MOV R%d,-2\nMOV R%d,BP\nADD R%d,R%d\n",regcount,regcount+1,regcount,regcount+1);
 				regcount++;
-				fprintf(fp,"MOV [R%d],R%d\n",regcount-1,regcount-2);
+				if(funcid->type==3)
+					fprintf(fp,"STRCPY R%d,R%d\n",regcount-1,regcount-2);
+				else
+					fprintf(fp,"MOV [R%d],R%d\n",regcount-1,regcount-2);
 				regcount=regcount-2;
 				endfn();
 			}
@@ -539,24 +548,23 @@ void pushargs(struct tree *a)
 		pushargs(a->ptr3);
 	codegen(a);
 	fprintf(fp,"PUSH R%d\n",regcount-1);
+	if(a->type==3)
+	{
+		fprintf(fp,"MOV R%d,SP\n",regcount);
+		fprintf(fp,"STRCPY R%d,R%d\n",regcount,regcount-1);
+	}
 	regcount--;	
 }
 void popargs(struct tree *a,struct ArgStruct *arg,int n)
 {	
+	int regcount=n+1;
 	if(a==NULL)
 		return;
-	fprintf(fp,"POP R%d\n",n+1);
+	fprintf(fp,"POP R%d\n",regcount);
 	//printf(" %s %s-%d\n",a->name,arg->name,arg->passtype);
 	if(arg->passtype==1)	//call by reference
 	{
 		regcount++;
-		if(a->ptr1!=NULL)
-			codegen(a->ptr1);
-		else
-		{
-			fprintf(fp,"MOV R%d,0\n",regcount);
-			regcount++;
-		}
 		if(a->Gentry!=NULL)
 			fprintf(fp,"MOV R%d,%d\n",regcount,a->Gentry->bind);
 		else
@@ -566,9 +574,21 @@ void popargs(struct tree *a,struct ArgStruct *arg,int n)
 			fprintf(fp,"ADD R%d,R%d\n",regcount,regcount+1);
 		}			
 		regcount++;
-		fprintf(fp,"ADD R%d,R%d\n",regcount-2,regcount-1);
-		regcount--;
-		fprintf(fp,"MOV [R%d],R%d\n",regcount-1,regcount-2);
+		if(a->ptr1!=NULL)
+		{
+			codegen(a->ptr1);
+			fprintf(fp,"ADD R%d,R%d\n",regcount-2,regcount-1);
+			regcount--;
+		}
+		if(arg->type==3)
+		{
+			fprintf(fp,"MOV R%d,1\n",regcount);
+			fprintf(fp,"MOV R%d,SP\n",regcount+1);
+			fprintf(fp,"ADD R%d,R%d\n",regcount,regcount+1);
+			fprintf(fp,"STRCPY R%d,R%d\n",regcount-1,regcount);
+		}
+		else
+			fprintf(fp,"MOV [R%d],R%d\n",regcount-1,regcount-2);
 		regcount=regcount-2;	
 	}	
 	popargs(a->ptr3,arg->next,n);
@@ -991,6 +1011,7 @@ struct tree * functioncall(struct tree * a, struct tree * b)
 		printf("\n Undeclared function %s!!\n",a->name);
 		exit(0);
 	}
+	a->type=a->Gentry->type;
 	temp1=a->Gentry->arglist;
 	temp2=b;
 	while(temp1!=NULL && temp2!=NULL)

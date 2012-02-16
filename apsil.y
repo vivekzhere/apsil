@@ -85,6 +85,7 @@ RType:		INT					{m3=0;
 		;
 		
 fID:		ID					{memcount=1;
+							$1->type=m3;
 							funcid=$1;
 							$$=$1;
 							}
