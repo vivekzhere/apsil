@@ -10,14 +10,20 @@ FILE *fp;
 
 struct ArgStruct{
         char* name;
-        int type;//0-integer,1-boolean
+        int type;//0-integer,1-boolean, 3-string
         int passtype;//0-by value,1-by reference
         struct ArgStruct* next;
 };
+struct DataStruct{
+	char *string;
+	int bind;
+	struct DataStruct *next;
+};
+struct DataStruct *Droot=NULL;
 struct Lsymbol
 {
 	char *name;
-	int type;	//integer-0, boolean-1
+	int type;	//integer-0, boolean-1, 3-string
 	int *binding;
 	int bind;
 	struct Lsymbol *next;
@@ -25,7 +31,7 @@ struct Lsymbol
 struct Gsymbol
 {
 	char *name;
-	int type;	//integer-0, boolean-1
+	int type;	//integer-0, boolean-1, 3-string
 	int size;
 	int *binding;
 	int bind;
@@ -37,12 +43,12 @@ struct Lsymbol *Lroot=NULL;
 
 struct tree
 {
-	int type;		//0-integer , 1-boolean , 2-void
+	int type;		//0-integer , 1-boolean , 2-void, 3-string
 	char nodetype;		/*	+,-,*,/,%,=,<,>,!
 					?-if statement
 					c-number,	i-identifier,	r-read,		p-print,
 					n-nonterminal,	e-double equals,	l-lessthan or equals
-					g-greaterthan or equals		w-while
+					g-greaterthan or equals		w-while		s-string
 					b-boolean constants,	f-function,	u-return
 					a-AND		o-OR		x-NOT
 							*/
@@ -79,6 +85,18 @@ int pop()
 	i=temp->i;
 	free(temp);
 	return i;
+}
+struct tree * makedata(struct tree *a)
+{
+	struct DataStruct *temp;
+	temp=malloc(sizeof(struct DataStruct));
+	a->value=datacount;
+	datacount++;
+	temp->string=a->name;
+	temp->bind=a->value;
+	temp->next=Droot;
+	Droot=temp;
+	return(a);
 }
 
 /*void displaysymbols()
