@@ -381,7 +381,10 @@ void codegen(struct tree * root)
 				regcount--;
 			}
 			codegen(root->ptr2);
-			fprintf(fp,"MOV [R%d],R%d\n",regcount-2,regcount-1);
+			if((root->ptr1->Gentry==NULL)?root->ptr1->Lentry->type:root->ptr1->Gentry->type==3)
+				fprintf(fp,"STRCPY R%d,R%d\n",regcount-2,regcount-1);
+			else
+				fprintf(fp,"MOV [R%d],R%d\n",regcount-2,regcount-1);
 			regcount=regcount-2;
 			break;
 		case 'r':	//READ
@@ -400,18 +403,33 @@ void codegen(struct tree * root)
 				fprintf(fp,"ADD R%d,R%d\n",regcount-2,regcount-1);
 				regcount--;
 			}
-			fprintf(fp,"IN R%d\n",regcount);
-			regcount++;
-			fprintf(fp,"MOV [R%d],R%d\n",regcount-2,regcount-1);
-			regcount=regcount-2;
+			if((root->ptr1->Gentry==NULL)?root->ptr1->Lentry->type:root->ptr1->Gentry->type==3)
+			{
+				fprintf(fp,"SIN R%d\n",regcount-1);
+				regcount--;
+			}
+			else
+			{
+				fprintf(fp,"IN R%d\n",regcount);
+				regcount++;
+				fprintf(fp,"MOV [R%d],R%d\n",regcount-2,regcount-1);
+				regcount=regcount-2;
+			}
 			break;
 		case 'p':	//PRINT
 			codegen(root->ptr1);
-			fprintf(fp,"OUT R%d\n",regcount-1);
+			if(root->ptr1->type==3)
+				fprintf(fp,"SOUT R%d\n",regcount-1);
+			else
+				fprintf(fp,"OUT R%d\n",regcount-1);
 			regcount--;
 			break;
 		case 'c':	//constants
 			fprintf(fp,"MOV R%d,%d\n",regcount,root->value);
+			regcount++;
+			break;
+		case 's':	//string constants
+			fprintf(fp,"MOV R%d,%d\n",regcount+1,root->value);
 			regcount++;
 			break;
 		case 'i':			//variables and array variables
@@ -430,7 +448,8 @@ void codegen(struct tree * root)
 				fprintf(fp,"ADD R%d,R%d\n",regcount-2,regcount-1);
 				regcount--;
 			}
-			fprintf(fp,"MOV R%d,[R%d]\n",regcount-1,regcount-1);
+			if(root->type!=3)			
+				fprintf(fp,"MOV R%d,[R%d]\n",regcount-1,regcount-1);
 			break;
 		case '?':	//IF statement , IF-ELSE statements
 			push();
