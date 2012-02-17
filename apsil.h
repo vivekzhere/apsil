@@ -159,7 +159,10 @@ void codegen(struct tree * root)
 		case 'e':
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp,"EQ R%d,R%d\n",regcount-2,regcount-1);
+			if(root->ptr1->type==3)
+				fprintf(fp,"STRCMP R%d,R%d\n",regcount-2,regcount-1);
+			else
+				fprintf(fp,"EQ R%d,R%d\n",regcount-2,regcount-1);
 			regcount--;
 			break;
 		case 'l':
