@@ -133,157 +133,7 @@ void filearea()
 	}
 	printf("\n");
 }*/
-int evaluate(struct tree * root)
-{
-	int n;
-	if(root==NULL)
-		return;
-	switch(root->nodetype)
-	{
-		case '<':
-			if(evaluate(root->ptr1) < evaluate(root->ptr2))
-				return TRUE; 
-			else
-				return FALSE;
-			break;
-		case '>':
-			if(evaluate(root->ptr1) > evaluate(root->ptr2))
-				return TRUE; 
-			else
-				return FALSE;
-			break;
-		case 'e':
-			if(evaluate(root->ptr1) == evaluate(root->ptr2))
-				return TRUE; 
-			else
-				return FALSE;
-			break;
-		case 'l':
-			if(evaluate(root->ptr1) <= evaluate(root->ptr2))
-				return TRUE; 
-			else
-				return FALSE;
-			break;
-		case 'g':
-			if(evaluate(root->ptr1) >= evaluate(root->ptr2))
-				return TRUE; 
-			else
-				return FALSE;
-			break;
-		case '!':
-			if(evaluate(root->ptr1) != evaluate(root->ptr2))
-				return TRUE; 
-			else
-				return FALSE;
-			break;
-		case 'b':    //for boolean constants
-			return (root->value);
-			break;
-		case 'a':	//AND operator
-			return((evaluate(root->ptr1)) && (evaluate(root->ptr2)));
-			break;
-		case 'o':	//OR operator
-			return((evaluate(root->ptr1)) || (evaluate(root->ptr2)));
-			break;
-		case 'x':	//NOT operator
-			return((evaluate(root->ptr1))-(evaluate(root->ptr2)));
-			break;
-		
-		case 'n':	//statement list
-			evaluate(root->ptr1);			
-			evaluate(root->ptr2);
-			break;
-		case '+':
-			return( evaluate(root->ptr1) + evaluate(root->ptr2) );
-			break;
-		case '-':
-			return( evaluate(root->ptr1) - evaluate(root->ptr2) );
-			break;
-		case '*':
-			return( evaluate(root->ptr1) * evaluate(root->ptr2) );
-			break;
-		case '/':
-			n=evaluate(root->ptr2);
-			if(n!=0)
-				return( evaluate(root->ptr1) / n );
-			else
-			{
-				printf("\n Division by zero !!\n");
-				exit(0);
-			}
-			break;
-		case '%':
-			n=evaluate(root->ptr2);
-			if(n!=0)
-				return( evaluate(root->ptr1) % n );
-			else
-			{
-				printf("\n Division by zero !!\n");
-				exit(0);
-			}	
-			break;
-		case '=':
-			if(root->ptr1->Gentry!=NULL)
-				*( (root->ptr1->Gentry->binding) + evaluate(root->ptr1->ptr1) )=evaluate(root->ptr2);
-			else
-				*( (root->ptr1->Lentry->binding) + evaluate(root->ptr1->ptr1) )=evaluate(root->ptr2);
-			break;
-		case 'r':	//READ
-			if(root->ptr1->type==1)
-			{
-				char a[10];
-				scanf("%s",a);
-				if(strcmp(a,"true")==0)
-					n=1;
-				else if(strcmp(a,"false")==0)
-					n=0;
-				else
-				{
-					printf("\n boolean variables must be true or false !!\n ");
-					exit(0);
-				}			
-			}
-			else
-				scanf("%d" , &n );
-			if(root->ptr1->Gentry!=NULL)
-				*((root->ptr1->Gentry->binding)+evaluate(root->ptr1->ptr1))=n;
-			else
-				*((root->ptr1->Lentry->binding)+evaluate(root->ptr1->ptr1))=n;
-			break;
-		case 'p':	//PRINT
-			if(root->ptr1->type==1)
-			{
-				if(evaluate(root->ptr1)==0)
-					printf("false\n");
-				else
-					printf("true\n");
-			}
-			else
-				printf("%d\n", evaluate(root->ptr1));
-			break;
-		case 'c':	//constants
-			return root->value;
-			break;
-		case 'i':			//variables and array variables
-			if(root->Gentry!=NULL)
-				return *((root->Gentry->binding)+evaluate(root->ptr1));
-			else
-				return *((root->Lentry->binding)+evaluate(root->ptr1));
-			break;
-		case '?':	//IF statement , IF-ELSE statements
-			if(evaluate(root->ptr1)==TRUE)
-				evaluate(root->ptr2);
-			else if(root->ptr3!=NULL)
-				evaluate(root->ptr3);
-			break;
-		case 'w':	//WHILE loop
-			while(evaluate(root->ptr1)==TRUE)
-				evaluate(root->ptr2);
-			break;
-		default:
-			return;
-	}
-}
+
 void pushargs(struct tree *);
 void popargs(struct tree *,struct ArgStruct *,int);
 void endfn();
@@ -505,7 +355,7 @@ void codegen(struct tree * root)
 			}
 			pushargs(root->ptr1);
 			fprintf(fp,"PUSH R0\nCALL fn%d\n",root->Gentry->bind);
-			fprintf(fp,"POP R%d\n",n);
+			fprintf(fp,"POP R%d\n",n);			
 			if(root->Gentry->type==3)
 			{
 				fprintf(fp,"MOV R%d,1\n",n);
@@ -547,7 +397,7 @@ void pushargs(struct tree *a)
 	if(a->ptr3!=NULL)
 		pushargs(a->ptr3);
 	codegen(a);
-	fprintf(fp,"PUSH R%d\n",regcount-1);
+	fprintf(fp,"PUSH R%d\n",regcount-1);	
 	if(a->type==3)
 	{
 		fprintf(fp,"MOV R%d,SP\n",regcount);
@@ -579,7 +429,7 @@ void popargs(struct tree *a,struct ArgStruct *arg,int n)
 			codegen(a->ptr1);
 			fprintf(fp,"ADD R%d,R%d\n",regcount-2,regcount-1);
 			regcount--;
-		}
+		}		
 		if(arg->type==3)
 		{
 			fprintf(fp,"MOV R%d,1\n",regcount);
