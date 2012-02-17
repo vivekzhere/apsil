@@ -8,8 +8,8 @@
 	struct tree *n;
 	struct ArgStruct *arg;
 }
-%token NUM OPER1 OPER2 ID BOOL INT STR STRING BNUM MAIN BEGN END DECL ENDDECL ASG READ PRINT RELOP LOGOP NEGOP IF ELSE THEN ENDIF WHILE DO ENDWHILE RETURN
-%type<n> stmtlist param stmt expr ids fID Body NUM BNUM STRING OPER1 OPER2 ID ASG READ PRINT RELOP LOGOP NEGOP IF WHILE RETURN
+%token NUM OPER1 OPER2 ID INT STR STRING MAIN BEGN END DECL ENDDECL ASG READ PRINT RELOP LOGOP NEGOP IF ELSE THEN ENDIF WHILE DO ENDWHILE RETURN
+%type<n> stmtlist param stmt expr ids fID Body NUM STRING OPER1 OPER2 ID ASG READ PRINT RELOP LOGOP NEGOP IF WHILE RETURN
 %type<arg> ArgId ArgIdList ArgDecl ArgList fArgList
 %left LOGOP
 %left RELOP  
@@ -35,8 +35,6 @@ GDefList:	GDecl					{}
 GDecl:		Type GIdList ';'			{}
 		;
 Type:		INT					{m=0;
-							}
-		|BOOL					{m=1;
 							}
 		|STR					{m=3;
 							}
@@ -78,8 +76,6 @@ Fdef:		RType fID '(' fArgList ')' '{' LDefblock Body '}'	{/*struct Lsymbol *temp
 		;
 RType:		INT					{m3=0;
 							}
-		|BOOL					{m3=1;
-							}
 		|STR					{m3=3;
 							}
 		;
@@ -108,8 +104,6 @@ ArgDecl:	ArgType ArgIdList			{$$=$2;}
 		;
 
 ArgType:	INT					{m2=0;
-							}
-		|BOOL					{m2=1;
 							}
 		|STR					{m2=3;
 							}
@@ -216,8 +210,6 @@ expr:		expr OPER1 expr				{$$=maketree($2,$1,$3,NULL);
 		|OPER1 expr	%prec UMIN		{$$=maketree($1,$2,NULL,NULL);
 							}
 		|NUM					{$$=$1;
-							}
-		|BNUM					{$$=$1;
 							}
 		|STRING					{$$=makedata($1);
 							}

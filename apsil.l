@@ -72,21 +72,9 @@ void func(int, char, char*, int);
 "integer"		{
 			return INT;				
 			}
-			
-"boolean"		{
-			return BOOL;
-			}
+
 "string"		{
 			return STR;
-			}
-"true"			{
-			func(1,'b',NULL,1);
-			return BNUM;
-			}
-			
-"false"			{
-			func(1,'b',NULL,0);
-			return BNUM;
 			}
 			
 "main"			{

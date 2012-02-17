@@ -22,7 +22,7 @@ struct DataStruct *Droot=NULL;
 struct Lsymbol
 {
 	char *name;
-	int type;	//integer-0, boolean-1, 3-string
+	int type;	//integer-0, 3-string
 	int *binding;
 	int bind;
 	struct Lsymbol *next;
@@ -30,7 +30,7 @@ struct Lsymbol
 struct Gsymbol
 {
 	char *name;
-	int type;	//integer-0, boolean-1, 3-string
+	int type;	//integer-0, 3-string
 	int size;
 	int *binding;
 	int bind;
@@ -48,7 +48,7 @@ struct tree
 					c-number,	i-identifier,	r-read,		p-print,
 					n-nonterminal,	e-double equals,	l-lessthan or equals
 					g-greaterthan or equals		w-while		s-string
-					b-boolean constants,	f-function,	u-return
+					f-function,	u-return
 					a-AND		o-OR		x-NOT
 							*/
 	char *name;
@@ -179,10 +179,6 @@ void codegen(struct tree * root)
 			codegen(root->ptr2);
 			fprintf(fp,"NE R%d,R%d\n",regcount-2,regcount-1);
 			regcount--;
-			break;
-		case 'b':    //for boolean constants
-			fprintf(fp,"MOV R%d,%d\n",regcount,root->value);
-			regcount++;
 			break;
 		case 'a':	//AND operator
 			codegen(root->ptr1);			
