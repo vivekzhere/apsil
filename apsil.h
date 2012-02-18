@@ -600,7 +600,7 @@ struct tree* maketree(struct tree *a,struct tree *b,struct tree *c,struct tree *
 		}
 	}
 	else
-	if(b!=NULL && c!=NULL && a->type==b->type && b->type==c->type)	//type checking of expressions and assigns b and c to ptr1 and ptr2 of a
+	if(b!=NULL && c!=NULL && a->type==b->type && b->type==c->type)	//type checking of arith and logic(and,or) expressions
 	{
 		a->ptr1=b;
 		a->ptr2=c;
@@ -624,8 +624,8 @@ struct tree* maketree(struct tree *a,struct tree *b,struct tree *c,struct tree *
 		a->ptr3=NULL;
 		return a;
 	}
-	else if(a->type==1 && b->type==c->type)		//type checking of logical expression 
-	{
+	else if(a->type==1 && b->type==c->type && (b->type==0 || (a->nodetype=='e' && b->type==3)))		//type checking of relational expression 
+	{		
 		a->ptr1=b;
 		a->ptr2=c;
 		a->ptr3=NULL;
