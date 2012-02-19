@@ -127,7 +127,7 @@ Mainblock:	 INT fMAIN '(' ')' '{' LDefblock Body '}'	{codegen($7);
 								fclose(fp);
 								if(Droot!=NULL)
 					 				filearea();						
-					 			printf("%d Lines Compiled\n",linecount);
+					 			//printf("%d Lines Compiled\n",linecount);
 								return(0);
 								}
 		;

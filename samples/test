@@ -1,0 +1,19 @@
+decl
+	integer a,b();
+enddecl
+integer b()
+{
+begin
+	return 0;
+end
+}
+integer main(){
+decl
+	integer c;
+enddecl
+begin
+	read(a); //hai
+	b();
+	return 0;
+end
+}
