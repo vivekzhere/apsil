@@ -47,8 +47,10 @@ struct tree
 					n-nonterminal,	e-double equals,	l-lessthan or equals
 					g-greaterthan or equals		w-while		s-string
 					f-function,	u-return
-					a-AND		o-OR		x-NOT
-							*/
+					a-AND		o-OR		x-NOT							
+					C-Create	O-Open		W-Write
+					S-Seek		R-Read		L-Close
+					D-Delete	F-Fork		X-Exec		E-Exit	*/
 	char *name;
 	int value;
 	struct Gsymbol *Gentry;
@@ -826,10 +828,54 @@ struct tree * functioncall(struct tree * a, struct tree * b)
 		temp1=temp1->next;
 		temp2=temp2->ptr3;
 	}
-	
+	if(temp1!=NULL || temp2!=NULL)
+	{
+		printf("\n%d No:of arguments mismatch in call to function %s!!\n",linecount,a->name);
+		exit(0);
+	}
 	a->type=a->Gentry->type;
 	a->nodetype='f';
 	a->argument=b;
 	a->ptr1=b;
+	return(a);
+}
+struct tree* syscheck(struct tree * a, struct tree * b, int flag)
+{
+	switch(flag)
+	{
+		case 1:
+			if(b==NULL || b->ptr3!=NULL || b->type!=3)
+			{
+				printf("\n%d Type mismatch in system call %s!!\n",linecount,a->name);
+				exit(0);
+			}
+			a->ptr1=b;
+			break;
+		case 2:
+			if(b==NULL || b->type!=0 || b->ptr3==NULL || b->ptr3->type!=3
+			|| b->ptr3->ptr3==NULL || b->ptr3->ptr3->type!=1 || b->ptr3->ptr3->ptr3!=NULL)
+			{
+				printf("\n%d Type mismatch in system call %s!!\n",linecount,a->name);
+				exit(0);
+			}
+			a->ptr1=b;
+			break;
+		case 3:
+			if(b==NULL || b->type!=0 || b->ptr3==NULL || b->ptr3->type!=0 || b->ptr3->ptr3!=NULL)
+			{
+				printf("\n%d Type mismatch in system call %s!!\n",linecount,a->name);
+				exit(0);
+			}
+			a->ptr1=b;
+			break;
+		case 4:
+			if(b==NULL || b->ptr3!=NULL || b->type!=0)
+			{
+				printf("\n%d Type mismatch in system call %s!!\n",linecount,a->name);
+				exit(0);
+			}
+			a->ptr1=b;
+			break;
+	}
 	return(a);
 }

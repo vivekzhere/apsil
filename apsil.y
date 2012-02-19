@@ -8,8 +8,8 @@
 	struct tree *n;
 	struct ArgStruct *arg;
 }
-%token NUM OPER1 OPER2 ID INT STR STRING MAIN BEGN END DECL ENDDECL ASG READ PRINT RELOP LOGOP NEGOP IF ELSE THEN ENDIF WHILE DO ENDWHILE RETURN
-%type<n> stmtlist param stmt expr ids fID Body NUM STRING OPER1 OPER2 ID ASG READ PRINT RELOP LOGOP NEGOP IF WHILE RETURN
+%token NUM OPER1 OPER2 ID INT STR STRING MAIN BEGN END DECL ENDDECL ASG READ PRINT RELOP LOGOP NEGOP IF ELSE THEN ENDIF WHILE DO ENDWHILE RETURN SYSCREA SYSOPEN SYSWRIT SYSSEEK SYSREAD SYSCLOS SYSDELE SYSFORK SYSEXEC SYSEXIT
+%type<n> stmtlist param stmt expr ids fID Body SysCall NUM STRING OPER1 OPER2 ID ASG READ PRINT RELOP LOGOP NEGOP IF WHILE RETURN SYSCREA SYSOPEN SYSWRIT SYSSEEK SYSREAD SYSCLOS SYSDELE SYSFORK SYSEXEC SYSEXIT
 %type<arg> ArgId ArgIdList ArgDecl ArgList fArgList
 %left LOGOP
 %left RELOP  
@@ -209,6 +209,8 @@ expr:		expr OPER1 expr				{$$=maketree($2,$1,$3,NULL);
 							}
 		|OPER1 expr	%prec UMIN		{$$=maketree($1,$2,NULL,NULL);
 							}
+		|SysCall				{$$=$1;
+							}
 		|NUM					{$$=$1;
 							}
 		|STRING					{$$=makedata($1);
@@ -229,6 +231,7 @@ ids:		ID					{$$=maketree($1,NULL,NULL,NULL);
 							}*/
 							}
 		;
+		
 param:							{$$=NULL;
 							}
 		|expr					{$$=$1;
@@ -237,7 +240,28 @@ param:							{$$=NULL;
 							}
 		;
 		
-
+SysCall:	SYSCREA '(' param ')'			{$$=syscheck($1,$3,1);
+							}
+		|SYSOPEN '(' param ')'			{$$=syscheck($1,$3,1);
+							}
+		|SYSWRIT '(' param ')'			{$$=syscheck($1,$3,2);
+							}
+		|SYSSEEK '(' param ')'			{$$=syscheck($1,$3,3);
+							}
+		|SYSREAD '(' param ')'			{$$=syscheck($1,$3,2);
+							}
+		|SYSCLOS '(' param ')'			{$$=syscheck($1,$3,4);
+							}
+		|SYSDELE '(' param ')'			{$$=syscheck($1,$3,1);
+							}
+		|SYSFORK '(' ')'			{$$=$1;
+							}
+		|SYSEXEC '(' param ')'			{$$=syscheck($1,$3,1);
+							}
+		|SYSEXIT '(' ')'			{$$=$1;
+							}
+		;
+		
 %%
 
 int main (void)
