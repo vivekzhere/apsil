@@ -141,17 +141,17 @@ void func(int, char, char*, int);
 			return PRINT;
 			}
 
-"AND"			{
+"and"			{
 			func(1,'a',NULL,-1);
 			return LOGOP;
 			}
 
-"OR"			{
+"or"			{
 			func(1,'o',NULL,-1);
 			return LOGOP;
 			}
 			
-"NOT"			{
+"not"			{
 			func(1,'x',NULL,-1);
 			return NEGOP;
 			}
