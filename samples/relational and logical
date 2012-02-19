@@ -1,0 +1,34 @@
+decl
+	integer a,b;
+	string x,y;
+enddecl
+integer main(){
+decl
+	integer c;
+	string z;
+enddecl
+begin
+	read(a);
+	b=5;
+	//c=x;
+	read(x);
+	y="hello";
+	if(a==b ) then 
+		write("a>b");
+	else
+		write("else a>b");
+	endif;
+	if(a==b AND b==c) then 
+		write("a>b AND b<c");
+	else
+		write("else a>b AND b<c");
+	endif;
+	if(NOT(a>=b) OR x==y) then 
+		write("NOT(a>=b) OR x==y");
+	else
+		write("else NOT(a>=b) OR x==y");
+	endif;
+	return 0;
+end
+}
+
