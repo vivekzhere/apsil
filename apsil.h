@@ -1,7 +1,7 @@
 #include<string.h>
 #define TRUE 1
 #define FALSE 0
-
+extern int linecount;
 int m=-1,m2=-1,m3=-1; //m-variable type, m2-argtype, m3-returntype of function
 int chkret=-1;
 struct tree *funcid=NULL;
@@ -23,7 +23,6 @@ struct Lsymbol
 {
 	char *name;
 	int type;	//integer-0, 3-string
-	int *binding;
 	int bind;
 	struct Lsymbol *next;
 };
@@ -32,7 +31,6 @@ struct Gsymbol
 	char *name;
 	int type;	//integer-0, 3-string
 	int size;
-	int *binding;
 	int bind;
 	struct ArgStruct *arglist;
 	struct Gsymbol *next;
@@ -122,18 +120,6 @@ void filearea()
 	}
 	intodataarea(Droot,fp3);		
 }
-/*void displaysymbols()
-{
-	struct symbol *temp=root;
-	printf("\n");
-	while(temp!=NULL)
-	{
-		printf("%s ",temp->name);
-		temp=temp->next;
-	}
-	printf("\n");
-}*/
-
 void pushargs(struct tree *);
 void popargs(struct tree *,struct ArgStruct *,int);
 void endfn();
@@ -448,7 +434,6 @@ void endfn()
 	temp=Lroot;
 	while(temp!=NULL)
 	{
-		
 		//printf("%s-%d\n",temp->name,temp->bind);
 		if(temp->bind>0)
 			fprintf(fp,"POP R%d\n",regcount);
@@ -456,28 +441,6 @@ void endfn()
 	}
 	fprintf(fp,"POP BP\nRET\n");	
 }
-void inorder(struct tree* root)
-{
-	if(root==NULL)
-		return;
-	if(root->nodetype!='c'&&root->nodetype!='i')
-		printf("(");
-	inorder(root->ptr1);
-	
-	
-	if(root->nodetype=='c')
-		printf("%d",root->value);
-	
-	if(root->nodetype=='i'||root->nodetype=='n')
-		printf(" %s ",root->name);
-	else
-		printf(" %c ",root->nodetype);
-		
-	inorder(root->ptr2);
-	if(root->nodetype!='c'&&root->nodetype!='i')
-		printf(")");
-}
-
 struct Gsymbol * lookup(char * name)
 {
 	struct Gsymbol *temp=root;	
@@ -528,14 +491,13 @@ struct tree* maketree(struct tree *a,struct tree *b,struct tree *c,struct tree *
 				a->Gentry=lookup(a->name);
 			if(a->Gentry==NULL && a->Lentry==NULL)
 			{
-				printf("\n Undeclared variable %s!!\n",a->name);
+				printf("\n%d: Undeclared variable %s!!\n",linecount,a->name);
 				exit(0);
 			}
 			if(a->Gentry!=NULL)
 				a->type=a->Gentry->type;
 			else
 				a->type=a->Lentry->type;
-			
 		}
 		if(b!=NULL)			//array operations
 		{
@@ -543,13 +505,12 @@ struct tree* maketree(struct tree *a,struct tree *b,struct tree *c,struct tree *
 				a->ptr1=b;
 			else
 			{
-				printf("\n Array error !!\n");
+				printf("\n%d: Array error !!\n",linecount);
 				exit(0);
 			}
 		}
 		return a;
 	}
-	
 	if(a->type==2)		//for void type nodes (READ,PRINT,IF,WHILE,ASG,RETURN)	
 	{
 		if(c==NULL && d==NULL)		//for READ and PRINT - assigns the variable to ptr1. Also Return
@@ -561,7 +522,7 @@ struct tree* maketree(struct tree *a,struct tree *b,struct tree *c,struct tree *
 				{					
 					if(a->ptr1->type!=m3)
 					{
-						printf("\n Wrong type of return value in function %s !!\n",funcid->name);
+						printf("\n%d: Wrong type of return value in function %s !!\n",linecount,funcid->name);
 						exit(0);
 					}
 				}
@@ -581,7 +542,7 @@ struct tree* maketree(struct tree *a,struct tree *b,struct tree *c,struct tree *
 				}
 				else
 				{
-					printf("\n Type Error!!\n");
+					printf("\n%d: Type Error!!\n",linecount);
 					exit(0);
 				}
 			}
@@ -594,7 +555,7 @@ struct tree* maketree(struct tree *a,struct tree *b,struct tree *c,struct tree *
 			}
 			else
 			{
-				printf("\n IF condition must have logical expression!!\n");
+				printf("\n%d: IF condition must have logical expression!!\n",linecount);
 				exit(0);
 			}
 		}
@@ -633,7 +594,7 @@ struct tree* maketree(struct tree *a,struct tree *b,struct tree *c,struct tree *
 	}
 	else
 	{
-		printf("\n Type Error !!\n ");
+		printf("\n%d: Type Error !!\n ",linecount);
 		exit(0);
 	}
 }
@@ -648,26 +609,15 @@ void finstall(struct tree *node,int type,struct ArgStruct *arg)
 		temp->type=type;
 		node->type=type;
 		temp->arglist=arg;		
-		//temp->binding=malloc(sizeof(int)*size);
-		//temp->size=size;
-		//temp->bind=memcount;
-		//memcount=memcount+size;
+		temp->size=0;	//flag for checking whether fuction defined
 		temp->next=root;
 		root=temp;
 	}
 	else
 	{
-		printf("\nMultiple declaration of identifier %s !!\n",temp->name);
+		printf("\n%d: Multiple declaration of identifier %s !!\n",linecount,temp->name);
 		exit(0);
 	}
-		/*struct ArgStruct *temp2;
-		temp=lookup(node->name);
-		temp2=temp->arglist;
-		while(temp2!=NULL)
-		{
-			printf(" %s-%d\n",temp2->name,temp2->type);
-			temp2=temp2->next;
-		}*/
 }
 void install(struct tree *node,int type,int size)
 {
@@ -680,7 +630,6 @@ void install(struct tree *node,int type,int size)
 		temp->name=node->name;
 		temp->type=type;
 		node->type=type;
-		temp->binding=NULL;
 		temp->size=size;
 		temp->bind=memcount;
 		while(i<size)
@@ -694,7 +643,7 @@ void install(struct tree *node,int type,int size)
 	}
 	else
 	{
-		printf("\nMultiple declaration of variable %s !!\n",temp->name);
+		printf("\n%d: Multiple declaration of variable %s !!\n",linecount,temp->name);
 		exit(0);
 	}
 }
@@ -708,7 +657,6 @@ void Linstall(struct tree *node,int type,int size)
 		temp->name=node->name;
 		temp->type=type;
 		node->type=type;
-		temp->binding=NULL;
 		fprintf(fp,"PUSH R0\n");
 		temp->bind=memcount;
 		memcount=memcount+size;
@@ -717,7 +665,7 @@ void Linstall(struct tree *node,int type,int size)
 	}
 	else
 	{
-		printf("\nMultiple declaration of variable %s !!\n",temp->name);
+		printf("\n%d Multiple declaration of variable %s !!\n",linecount,temp->name);
 		exit(0);
 	}
 }
@@ -734,16 +682,11 @@ struct ArgStruct * makearg(char *name, int type, int p)
 struct ArgStruct * makeargtree(struct ArgStruct *a,struct ArgStruct *b)
 {
 	struct ArgStruct *temp=a;
-	/*temp=b;
-	while(temp->next!=NULL)
-		temp=temp->next;
-	temp->next=a;
-	return(b);*/
 	while(a->next!=NULL)
 	{
 		if(strcmp(a->name,b->name)==0)
 		{
-			printf("\n Argument declared more than once in function!!\n");
+			printf("\n%d: Argument declared more than once in function!!\n",linecount);
 			exit(0);
 		}
 		a=a->next;	
@@ -757,12 +700,12 @@ void fdefcheck(struct tree *a,struct ArgStruct *b,int type)
 	a->Gentry=lookup(a->name);
 	if(a->Gentry==NULL)
 	{
-		printf("\n Undeclared function %s defined!!\n",a->name);
+		printf("\n%d: Undeclared function %s defined!!\n",linecount,a->name);
 		exit(0);
 	}
 	if(a->Gentry->type!=type)
 	{
-		printf("\n Wrong return type of function %s !!\n",a->name);
+		printf("\n%d: Wrong return type of function %s !!\n",linecount,a->name);
 		exit(0);
 	}	
 	temp=a->Gentry->arglist;
@@ -770,12 +713,12 @@ void fdefcheck(struct tree *a,struct ArgStruct *b,int type)
 	{	//printf(" %s-%d %s-%d\n",temp->name,temp->type,b->name,b->type);
 		if(temp->type!=b->type)
 		{
-			printf("\n Argument type mismatch in function %s !!\n",a->name);
+			printf("\n%d: Argument type mismatch in function %s !!\n",linecount,a->name);
 			exit(0);
 		}
 		if(strcmp(temp->name,b->name)!=0)
 		{
-			printf("\n Arguments mismatch in function %s !!\n",temp->name,b->name,a->name);
+			printf("\n%d Arguments mismatch in function %s !!\n",linecount,a->name);
 			exit(0);
 		}
 		temp=temp->next;
@@ -783,9 +726,10 @@ void fdefcheck(struct tree *a,struct ArgStruct *b,int type)
 	}
 	if(temp!=NULL||b!=NULL)
 	{
-		printf("\n Arguments mismatch in function %s !!\n",a->name);
+		printf("\n%d: Arguments mismatch in function %s !!\n",linecount,a->name);
 		exit(0);
 	}
+	a->Gentry->size=1; //flag set to one. ie fuction defined
 	fprintf(fp,"fn%d:\n",labelcount);
 	a->Gentry->bind=labelcount;
 	labelcount++;
@@ -806,7 +750,6 @@ void arglistinstall(struct tree *a)
 			temp2=malloc(sizeof(struct Lsymbol));
 			temp2->name=temp->name;
 			temp2->type=temp->type;
-			//temp2->binding=malloc(sizeof(int));
 			temp2->bind=i;
 			i--;
 			temp2->next=Lroot;
@@ -814,7 +757,7 @@ void arglistinstall(struct tree *a)
 		}
 		else
 		{
-			printf("\nMultiple declaration of variable %s !!\n",temp2->name);
+			printf("\n%d: Multiple declaration of variable %s !!\n",linecount,temp2->name);
 			exit(0);
 		}
 		temp=temp->next;
@@ -833,14 +776,13 @@ struct tree * makeparam(struct tree *a,struct tree *b)
 				b->Gentry=lookup(b->name);
 			if(b->Gentry==NULL && b->Lentry==NULL)
 			{
-				printf("\n Undeclared variable %s as function parameter!!\n",b->name);
+				printf("\n%d: Undeclared variable %s as function parameter!!\n",linecount,b->name);
 				exit(0);
 			}
 			if(a->Gentry!=NULL)
 				b->type=b->Gentry->type;
 			else
 				b->type=b->Lentry->type;
-			
 		}
 	}
 	temp=a;
@@ -857,7 +799,12 @@ struct tree * functioncall(struct tree * a, struct tree * b)
 	a->Gentry=lookup(a->name);
 	if(a->Gentry==NULL)
 	{
-		printf("\n Undeclared function %s!!\n",a->name);
+		printf("\n%d: Undeclared function %s!!\n",linecount,a->name);
+		exit(0);
+	}
+	if(a->Gentry->size==0)
+	{
+		printf("\n%d: UnDefined function %s!!\n",linecount,a->name);
 		exit(0);
 	}
 	a->type=a->Gentry->type;
@@ -868,17 +815,18 @@ struct tree * functioncall(struct tree * a, struct tree * b)
 		//printf(" %s-%d %s-%d\n",temp1->name,temp1->type,temp2->name,temp2->type);
 		if(temp2->type!=temp1->type)
 		{
-			printf("\n Type mismatch in call to function %s!!\n",a->name);
+			printf("\n%d Type mismatch in call to function %s!!\n",linecount,a->name);
 			exit(0);
 		}
 		if(temp1->passtype==1 && temp2->nodetype!='i')
 		{
-			printf("\n Call by reference need a variable in call to function %s!!\n",a->name);
+			printf("\n%d Call by reference need a variable in call to function %s!!\n",linecount,a->name);
 			exit(0);
 		}
 		temp1=temp1->next;
 		temp2=temp2->ptr3;
 	}
+	
 	a->type=a->Gentry->type;
 	a->nodetype='f';
 	a->argument=b;

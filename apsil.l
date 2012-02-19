@@ -1,40 +1,24 @@
 %{
 #include "y.tab.h"
-struct Lsymbol
-{
-	char *name;
-	int type;	//integer-0, boolean-1
-	int *binding;
-	int bind;
-	struct Lsymbol *next;
-};
-struct Gsymbol
-{
-	char *name;
-	int type;	//integer-0, boolean-1
-	int size;
-	int *binding;
-	int bind;
-	struct Gsymbol *next;
-};
+int linecount=1;
 struct tree
 {
-	int type;		//0-integer , 1-boolean , 2-void
+	int type;		//0-integer , 1-boolean , 2-void, 3-string
 	char nodetype;		/*	+,-,*,/,%,=,<,>,!
 					?-if statement
 					c-number,	i-identifier,	r-read,		p-print,
 					n-nonterminal,	e-double equals,	l-lessthan or equals
-					g-greaterthan or equals		w-while
-					b-boolean constants
+					g-greaterthan or equals		w-while		s-string
+					f-function,	u-return
 					a-AND		o-OR		x-NOT
 							*/
 	char *name;
 	int value;
 	struct Gsymbol *Gentry;
 	struct Lsymbol *Lentry;
+	struct tree *argument;
 	struct tree *ptr1,*ptr2,*ptr3;
 };
-
 void func(int, char, char*, int);
 %}
 
@@ -184,9 +168,11 @@ void func(int, char, char*, int);
 			
 [(),;\[\]\{\}&]		{return *yytext;}
 
-[/][/].*\n			{}
+[/][/].*\n			{linecount++;}
 
-[ \t\n]			{}
+[\n]			{linecount++;}
+
+[ \t]			{}
 
 .			{}
 

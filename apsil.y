@@ -127,7 +127,7 @@ Mainblock:	 INT fMAIN '(' ')' '{' LDefblock Body '}'	{codegen($7);
 								fclose(fp);
 								if(Droot!=NULL)
 					 				filearea();						
-								//evaluate($7);
+					 			printf("%d Lines Compiled\n",linecount);
 								return(0);
 								}
 		;
@@ -251,5 +251,5 @@ int main (void)
 
 int yyerror (char *msg) 
 {
-	return fprintf (stderr, "YACC: %s\n", msg);
+	return fprintf (stderr, "%d: %s\n",linecount,msg);
 }
