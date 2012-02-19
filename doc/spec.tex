@@ -3,7 +3,9 @@
 \usepackage{fullpage}
 \usepackage{palatino}
 \usepackage{tabularx}
+\usepackage{listings}
 \usepackage{verbatim}
+
 
 
 \title{APSIL Language Specification\\
@@ -11,7 +13,7 @@ Version 1.0}
 \author{\texttt{kmurali@nitc.ac.in} \\  \small {NIT Calicut} }
 
 \begin{document}
-
+ \newcommand{\kw}[1]{\texttt{#1}}
 \maketitle
 \tableofcontents
 \pagebreak
@@ -34,5 +36,64 @@ Function Definitions
 . 
 Main Function
 \end{verbatim}
+
+\section{Lexical Elements}
+
+\subsection{Comments and White Spaces}
+
+APSIL allows only line comments. Line comments start with the character sequence \textbf{//} and stop at the end of the line. 
+White spaces in the program including tabs, newline and horizontal spaces are ignored.
+
+\subsection{Keywords}
+The following are the reserved words in APSIL and it cannot be used as  identifiers.
+
+\begin{tabular}{c c c c c c }
+\kw{read} & \kw{write} & \kw{if} &   \kw{then} &   \kw{else} &   \kw{endif} \\
+\kw{while} &   \kw{do} &   \kw{endwhile} &   \kw{integer} &	\kw{string} & \kw{main} \\
+\kw{return} &   \kw{and}  &	\kw{or}		&	\kw{not}	&  \kw{decl} &		\kw{enddecl}		 \\
+\kw{begin}	& \kw{end}  &  \kw{Create} &   \kw{Open} &   \kw{Write} &   \kw{Seek} \\
+ \kw{Read} & \kw{Close} &   \kw{Delete}   & \kw{Fork} & \kw{Exec} & \kw{Exit} 
+\end{tabular}
+
+
+\subsection{Operators and Delimiters}
+
+The following are the operators and delimiters in APSIL   \\
+
+\begin{tabular}{c c c c c c c c c c c c c}
+( 		 & 		) 		& 		\{		 &		\} 		& 		[		&		 ]   
+/		 & 		*		 & 		+ 		 & 		-  		& 		\% 		& 		;   \\
+\textgreater  & 	   \textless   &  \textgreater = 	 &  \textless =	&	    !=		&	==	 
+\kw{and}  	  &		\kw{or}		&	\kw{not}	\\
+\end{tabular}
+
+
+\subsection{Indentifiers}
+
+Identifiers are names of variables and user-defined functions. Identifiers should start with an alphabet, and may contain both alphabets and digits. Special characters are not allowed in identifiers.
+\begin{verbatim}
+identifier -> (alphabet)(alphabet | digit)*
+\end{verbatim}
+
+
+\subsection{Literals}
+There are integer literals and string literals in APSIL. An integer literal is a sequence of digits representing an integer.
+Negative integers are represented with a negative sign preceding the sequence of digits. Any sequence of characters enclosed within double quotes (") are considered as string literals. However APSIL restricts string literals to size of atmost 16 characters. 
+\\
+\\
+Examples of literals are \texttt{
+ 19, -35, "Hello World"}
+
+\section{Data Types}
+
+\subsection{Primitive Types}
+There are two primitive data types in APSIL. 
+\begin{enumerate}
+
+\item \textbf{Integer} : An integer value can range from -32767 to +32768. An integer type variable is declared using the keyword \kw {integer}
+\item \textbf{String}  
+A string type represents the set of string values. A string value can be atmost 16 characters long. String type variables is declared using the keyword \kw{string}.
+\end{enumerate}
+
 
 \end{document}

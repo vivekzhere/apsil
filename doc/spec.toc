@@ -2,3 +2,11 @@
 \contentsline {paragraph}{}{2}
 \contentsline {paragraph}{}{2}
 \contentsline {section}{\numberline {2}General Program Structure}{2}
+\contentsline {section}{\numberline {3}Lexical Elements}{2}
+\contentsline {subsection}{\numberline {3.1}Comments and White Spaces}{2}
+\contentsline {subsection}{\numberline {3.2}Keywords}{2}
+\contentsline {subsection}{\numberline {3.3}Operators and Delimiters}{2}
+\contentsline {subsection}{\numberline {3.4}Indentifiers}{3}
+\contentsline {subsection}{\numberline {3.5}Literals}{3}
+\contentsline {section}{\numberline {4}Data Types}{3}
+\contentsline {subsection}{\numberline {4.1}Primitive Types}{3}
