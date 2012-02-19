@@ -373,6 +373,170 @@ void codegen(struct tree * root)
 			else
 				fprintf(fp,"HALT\n");
 			break;
+		case 'C':	//Create syscall
+		case 'O':	//Open syscall
+		case 'L':	//Close syscall
+		case 'D':	//Delete syscall
+			n=0;
+			fprintf(fp,"PUSH R0\nPUSH BP\n");
+			while(n<8)
+			{
+				fprintf(fp,"PUSH R%d\n",n);
+				n++;
+			}
+			codegen(root->ptr1);
+			fprintf(fp,"PUSH R%d\n",regcount-1);
+			regcount--;
+			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
+			fprintf(fp,"MOV BP,SP\nINT 1\n");
+			//Interrupt 
+			fprintf(fp,"POP R0\n");
+			fprintf(fp,"POP R0\n");	
+			n=7;		
+			while(n>=0)
+			{
+				fprintf(fp,"POP R%d\n",n);
+				n--;
+			}			
+			fprintf(fp,"POP BP\n");
+			fprintf(fp,"POP R%d\n",regcount);
+			regcount++;			
+			break;
+		case 'W':	//Write syscall
+		case 'R':	//Read syscall
+			n=0;
+			fprintf(fp,"PUSH R0\nPUSH BP\n");
+			while(n<8)
+			{
+				fprintf(fp,"PUSH R%d\n",n);
+				n++;
+			}
+			codegen(root->ptr1);
+			fprintf(fp,"PUSH R%d\n",regcount-1);
+			regcount--;
+			codegen(root->ptr1->ptr3);
+			fprintf(fp,"PUSH R%d\n",regcount-1);
+			regcount--;
+			codegen(root->ptr1->ptr3->ptr3);
+			fprintf(fp,"PUSH R%d\n",regcount-1);
+			regcount--;
+			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
+			fprintf(fp,"MOV BP,SP\nINT 2\n");
+			//Interrupt 
+			fprintf(fp,"POP R0\n");
+			fprintf(fp,"POP R0\n");
+			fprintf(fp,"POP R0\n");
+			fprintf(fp,"POP R0\n");	
+			n=7;		
+			while(n>=0)
+			{
+				fprintf(fp,"POP R%d\n",n);
+				n--;
+			}			
+			fprintf(fp,"POP BP\n");
+			fprintf(fp,"POP R%d\n",regcount);
+			regcount++;
+			break;
+		case 'S':	//Seek syscall
+			n=0;
+			fprintf(fp,"PUSH R0\nPUSH BP\n");
+			while(n<8)
+			{
+				fprintf(fp,"PUSH R%d\n",n);
+				n++;
+			}
+			codegen(root->ptr1);
+			fprintf(fp,"PUSH R%d\n",regcount-1);
+			regcount--;
+			codegen(root->ptr1->ptr3);
+			fprintf(fp,"PUSH R%d\n",regcount-1);
+			regcount--;
+			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
+			fprintf(fp,"MOV BP,SP\nINT 2\n");
+			//Interrupt 
+			fprintf(fp,"POP R0\n");
+			fprintf(fp,"POP R0\n");
+			fprintf(fp,"POP R0\n");	
+			n=7;		
+			while(n>=0)
+			{
+				fprintf(fp,"POP R%d\n",n);
+				n--;
+			}			
+			fprintf(fp,"POP BP\n");
+			fprintf(fp,"POP R%d\n",regcount);
+			regcount++;
+			break;				
+		case 'F':	//Fork syscall
+			n=0;
+			fprintf(fp,"PUSH R0\nPUSH BP\n");
+			while(n<8)
+			{
+				fprintf(fp,"PUSH R%d\n",n);
+				n++;
+			}
+			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
+			fprintf(fp,"MOV BP,SP\nINT 3\n");
+			//Interrupt 
+			fprintf(fp,"POP R0\n");
+			n=7;		
+			while(n>=0)
+			{
+				fprintf(fp,"POP R%d\n",n);
+				n--;
+			}			
+			fprintf(fp,"POP BP\n");
+			fprintf(fp,"POP R%d\n",regcount);
+			regcount++;
+			break;
+		case 'X':	//Exec syscall
+			n=0;
+			fprintf(fp,"PUSH R0\nPUSH BP\n");
+			while(n<8)
+			{
+				fprintf(fp,"PUSH R%d\n",n);
+				n++;
+			}
+			codegen(root->ptr1);
+			fprintf(fp,"PUSH R%d\n",regcount-1);
+			regcount--;
+			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
+			fprintf(fp,"MOV BP,SP\nINT 3\n");
+			//Interrupt 
+			fprintf(fp,"POP R0\n");
+			fprintf(fp,"POP R0\n");	
+			n=7;		
+			while(n>=0)
+			{
+				fprintf(fp,"POP R%d\n",n);
+				n--;
+			}			
+			fprintf(fp,"POP BP\n");
+			fprintf(fp,"POP R%d\n",regcount);
+			regcount++;
+			break;
+		case 'E':	//Exit syscall
+			n=0;
+			fprintf(fp,"PUSH R0\nPUSH BP\n");
+			while(n<8)
+			{
+				fprintf(fp,"PUSH R%d\n",n);
+				n++;
+			}
+			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
+			fprintf(fp,"MOV BP,SP\nINT 4\n");
+			//Interrupt 
+			fprintf(fp,"POP R0\n");
+			n=7;		
+			while(n>=0)
+			{
+				fprintf(fp,"POP R%d\n",n);
+				n--;
+			}			
+			fprintf(fp,"POP BP\n");
+			fprintf(fp,"POP R%d\n",regcount);
+			regcount++;
+			break;
 		default:
 			return;
 	}
@@ -528,6 +692,11 @@ struct tree* maketree(struct tree *a,struct tree *b,struct tree *c,struct tree *
 						exit(0);
 					}
 				}
+			}
+			if(b->type==1)
+			{
+				printf("\n%d: Unexpected type of expression !!\n",linecount);
+				exit(0);
 			}
 			return a;
 		}
@@ -843,7 +1012,7 @@ struct tree* syscheck(struct tree * a, struct tree * b, int flag)
 {
 	switch(flag)
 	{
-		case 1:
+		case 1:		//Create, Open, Delete, Exec
 			if(b==NULL || b->ptr3!=NULL || b->type!=3)
 			{
 				printf("\n%d Type mismatch in system call %s!!\n",linecount,a->name);
@@ -851,7 +1020,7 @@ struct tree* syscheck(struct tree * a, struct tree * b, int flag)
 			}
 			a->ptr1=b;
 			break;
-		case 2:
+		case 2:		//Write, Read
 			if(b==NULL || b->type!=0 || b->ptr3==NULL || b->ptr3->type!=3
 			|| b->ptr3->ptr3==NULL || b->ptr3->ptr3->type!=1 || b->ptr3->ptr3->ptr3!=NULL)
 			{
@@ -860,7 +1029,7 @@ struct tree* syscheck(struct tree * a, struct tree * b, int flag)
 			}
 			a->ptr1=b;
 			break;
-		case 3:
+		case 3:		//Seek
 			if(b==NULL || b->type!=0 || b->ptr3==NULL || b->ptr3->type!=0 || b->ptr3->ptr3!=NULL)
 			{
 				printf("\n%d Type mismatch in system call %s!!\n",linecount,a->name);
@@ -868,7 +1037,7 @@ struct tree* syscheck(struct tree * a, struct tree * b, int flag)
 			}
 			a->ptr1=b;
 			break;
-		case 4:
+		case 4:		//Close
 			if(b==NULL || b->ptr3!=NULL || b->type!=0)
 			{
 				printf("\n%d Type mismatch in system call %s!!\n",linecount,a->name);

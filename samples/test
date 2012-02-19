@@ -14,6 +14,8 @@ enddecl
 begin
 	read(a); //hai
 	a=b(a);
+	c=3;
+	write(a>c);
 	return 0;
 end
 }
