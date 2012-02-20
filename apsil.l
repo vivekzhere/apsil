@@ -65,14 +65,6 @@ void func(int, char, char*, int);
 			return MAIN;
 			}
 			
-"begin"			{
-			return BEGN;
-			}
-
-"end"			{
-			return END;
-			}
-
 "decl"			{
 			return DECL;
 			}
@@ -194,16 +186,16 @@ void func(int, char, char*, int);
 			}
 
 
-(&&)			{
+"&&"			{
 			func(1,'a',NULL,-1);
 			return LOGOP;
 			}
 
-(||)			{
+"||"			{
 			func(1,'o',NULL,-1);
 			return LOGOP;
 			}
-(!)			{
+"!"			{
 			func(1,'x',NULL,-1);
 			return NEGOP;
 			}

@@ -3,26 +3,18 @@ decl
 enddecl
 integer f(integer x)
 {
-decl
 	integer a;
-enddecl
-begin
 	if(x>=91) then
 		a=91;
 	else
 		a=f(f(x+1));
 	endif;
 	return a;
-end
 }
 integer main()
 {
-decl
 	integer y;
-enddecl
-begin
 	read(y);
 	write(f(y));
 	return 0;	
-end
 }

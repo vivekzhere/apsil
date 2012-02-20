@@ -3,23 +3,19 @@ decl
 enddecl
 integer fact(integer n)
 {
-	begin
-		if(n==1) then
-			return 1;
-		else
-			return(n*fact(n-1));
-		endif;
-	end
+	integer f;
+	if(n==1) then
+		f=1;
+	else
+		f=n*fact(n-1);
+	endif;
+	return f;
 }
 integer main()
 {
-	decl
-		integer b;
-	enddecl
-	begin
-		read(a);
-		b=fact(a);
-		write(b);
-		return 0;
-	end
+	integer b;
+	read(a);
+	b=fact(a);
+	write(b);
+	return 0;
 }

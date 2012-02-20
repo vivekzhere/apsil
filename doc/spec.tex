@@ -153,7 +153,7 @@ For every function except the \textbf{main()} function defined in a APSIL progra
 
 A function declaration should specify the name of the function, the name and type of each of its arguments and the return type of the function. A function can have integer/string arguments. Parameters may be passed by value or reference. Arrays cannot be passed as arguments. If a global variable name appears as an argument, then within the scope of the function, the new declaration will be valid and global variable declaration is suppressed. Different functions may have arguments of the same name. However, the same name cannot be given to different arguments in a function. For arguments that are passed by reference, the argument name is preceded by an ampersand(\&) in the function declaration. The return type of a function must be either integer or string. The general form of declarations is as follows \\ 
 
-\textit{type function\_name (type argument1, type argument2...);}
+\textit{type function\_name (type1 argument1,argument2,...; type2 argument1,argument2,...;...);}
 \\
 \\
 Examples for global declarations
@@ -277,7 +277,7 @@ The APSIL assignment statement assigns the value of an expression to a variable,
 
 
 \subsection{Return statement}
-\textbf{Return} statement in a function passes the control from the callee to the caller function and returns a value to the caller function. All functions including the \textbf{main()} must have a \textbf{return} statement. The return type should match the type of the expression. The return type of main is integer. The syntax is as follows\\
+\textbf{Return} statement in a function passes the control from the callee to the caller function and returns a value to the caller function. All functions including the \textbf{main()} must have exactly one \textbf{return} statement and it should be the last statement in the funtion body. The return type of the function should match the type of the expression. The return type of main is integer. The syntax is as follows\\
 
 \textit{\textbf{return} expression;}
 

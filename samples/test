@@ -1,21 +1,7 @@
-decl
-	integer a,b(integer a);
-enddecl
-integer b(integer a)
+integer main()
 {
-begin
-	return a;
-end
-}
-integer main(){
-decl
-	integer c;
-enddecl
-begin
-	read(a); //hai
-	a=b(a);
-	c=3;
-	write(a>c);
+	integer x;
+	string y;
+	x=Read(5,"hello",x);
 	return 0;
-end
 }

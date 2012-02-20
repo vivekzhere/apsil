@@ -1,5 +1,6 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.1.26)  20 FEB 2012 07:12
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.1.18)  20 FEB 2012 12:15
 entering extended mode
+ file:line:error style messages enabled.
  %&-line parsing enabled.
 **spec.tex
 (./spec.tex
@@ -286,7 +287,7 @@ xmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive
 alatino/uplb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/palatino/uplbi8a.p
 fb></usr/share/texmf-texlive/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/te
 xmf-texlive/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on spec.pdf (9 pages, 123755 bytes).
+Output written on spec.pdf (9 pages, 123785 bytes).
 PDF statistics:
  61 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

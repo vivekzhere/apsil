@@ -2,10 +2,7 @@ decl
 	string a;
 enddecl
 integer main(){
-decl	
 	string b;
-enddecl
-begin
 	a="Hello";
 	a="Hai";
 	a="HaiWorld";
@@ -15,6 +12,5 @@ begin
 	a=b;
 	write(b);
 	return 0;
-end
 }
 

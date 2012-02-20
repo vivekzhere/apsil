@@ -3,14 +3,11 @@ decl
 	string x,y;
 enddecl
 integer main(){
-decl
 	integer c;
 	string z;
-enddecl
-begin
 	read(a);
 	b=5;
-	//c=x;
+	c=x;
 	read(x);
 	y="hello";
 	if(a==b ) then 
@@ -29,6 +26,5 @@ begin
 		write("else !(a>=b) || x==y");
 	endif;
 	return 0;
-end
 }
 

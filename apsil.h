@@ -3,7 +3,6 @@
 #define FALSE 0
 extern int linecount;
 int m=-1,m2=-1,m3=-1; //m-variable type, m2-argtype, m3-returntype of function
-int chkret=-1;
 struct tree *funcid=NULL;
 int memcount=0,regcount=0,datacount=512;
 FILE *fp;
@@ -386,6 +385,11 @@ void codegen(struct tree * root)
 			}
 			codegen(root->ptr1);
 			fprintf(fp,"PUSH R%d\n",regcount-1);
+			if(root->ptr1->type==3)
+			{
+				fprintf(fp,"MOV R%d,SP\n",regcount);
+				fprintf(fp,"STRCPY R%d,R%d\n",regcount,regcount-1);
+			}
 			regcount--;
 			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
 			fprintf(fp,"MOV BP,SP\nINT 1\n");
@@ -416,6 +420,8 @@ void codegen(struct tree * root)
 			regcount--;
 			codegen(root->ptr1->ptr3);
 			fprintf(fp,"PUSH R%d\n",regcount-1);
+			fprintf(fp,"MOV R%d,SP\n",regcount);
+			fprintf(fp,"STRCPY R%d,R%d\n",regcount,regcount-1);
 			regcount--;
 			codegen(root->ptr1->ptr3->ptr3);
 			fprintf(fp,"PUSH R%d\n",regcount-1);
@@ -499,6 +505,8 @@ void codegen(struct tree * root)
 			}
 			codegen(root->ptr1);
 			fprintf(fp,"PUSH R%d\n",regcount-1);
+			fprintf(fp,"MOV R%d,SP\n",regcount);
+			fprintf(fp,"STRCPY R%d,R%d\n",regcount,regcount-1);
 			regcount--;
 			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
 			fprintf(fp,"MOV BP,SP\nINT 3\n");
@@ -683,15 +691,14 @@ struct tree* maketree(struct tree *a,struct tree *b,struct tree *c,struct tree *
 		{
 			a->ptr1=b;			
 			if(a->nodetype=='u')	//RETURN
-			{
-				if(funcid!=NULL)	//NOT MAIN
-				{					
-					if(a->ptr1->type!=m3)
-					{
-						printf("\n%d: Wrong type of return value in function %s !!\n",linecount,funcid->name);
-						exit(0);
-					}
+			{					
+				if(a->ptr1->type!=m3)
+				{
+					printf("\n%d: Wrong type of return value in function %s !!\n",
+					linecount,funcid==NULL?"main":funcid->name);
+					exit(0);
 				}
+
 			}
 			if(b->type==1)
 			{
@@ -1022,7 +1029,7 @@ struct tree* syscheck(struct tree * a, struct tree * b, int flag)
 			break;
 		case 2:		//Write, Read
 			if(b==NULL || b->type!=0 || b->ptr3==NULL || b->ptr3->type!=3
-			|| b->ptr3->ptr3==NULL || b->ptr3->ptr3->type!=1 || b->ptr3->ptr3->ptr3!=NULL)
+			|| b->ptr3->ptr3==NULL || b->ptr3->ptr3->type!=0 || b->ptr3->ptr3->ptr3!=NULL)
 			{
 				printf("\n%d Type mismatch in system call %s!!\n",linecount,a->name);
 				exit(0);

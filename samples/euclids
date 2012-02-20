@@ -4,34 +4,28 @@ decl
 enddecl
 integer gcd(integer a,b)
 {
-decl
 	integer d,temp;
-enddecl
-begin
+	integer f;
 	if(a%b==0) then 
 		x=0;
 		y=1;
-		return b;
+		f=b;
 	else
 		d=gcd(b,a%b);		
 		temp=x;
 		x=y;
 		y=temp-y*(a/b);
-		return d;
+		f=d;
 	endif;	
-end
+	return f;
 }
 integer main()
 {
-decl
 	integer m,n;
-enddecl
-begin
 	read(m);
 	read(n);
 	write(gcd(m,n));
 	write(x);
 	write(y);
 	return 0;
-end
 }

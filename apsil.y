@@ -9,7 +9,7 @@
 	struct ArgStruct *arg;
 }
 %token NUM OPER1 OPER2 ID INT STR STRING MAIN BEGN END DECL ENDDECL ASG READ PRINT RELOP LOGOP NEGOP IF ELSE THEN ENDIF WHILE DO ENDWHILE RETURN SYSCREA SYSOPEN SYSWRIT SYSSEEK SYSREAD SYSCLOS SYSDELE SYSFORK SYSEXEC SYSEXIT
-%type<n> stmtlist param stmt expr ids fID Body SysCall NUM STRING OPER1 OPER2 ID ASG READ PRINT RELOP LOGOP NEGOP IF WHILE RETURN SYSCREA SYSOPEN SYSWRIT SYSSEEK SYSREAD SYSCLOS SYSDELE SYSFORK SYSEXEC SYSEXIT
+%type<n> stmtlist param stmt retstmt expr ids fID Body SysCall NUM STRING OPER1 OPER2 ID ASG READ PRINT RELOP LOGOP NEGOP IF WHILE RETURN SYSCREA SYSOPEN SYSWRIT SYSSEEK SYSREAD SYSCLOS SYSDELE SYSFORK SYSEXEC SYSEXIT
 %type<arg> ArgId ArgIdList ArgDecl ArgList fArgList
 %left LOGOP
 %left RELOP  
@@ -62,13 +62,13 @@ FDefList:						{}
 		|FDefList Fdef				{}
 		;
 		
-Fdef:		RType fID '(' fArgList ')' '{' LDefblock Body '}'	{/*struct Lsymbol *temp=Lroot;
+Fdef:		RType fID '(' fArgList ')' '{' Body '}'	{/*struct Lsymbol *temp=Lroot;
 									while(temp!=NULL)
 									{
 										printf(" %s-%d-%d\n",temp->name,temp->type,temp->bind);
 										temp=temp->next;
 									}*/
-									codegen($8);
+									codegen($7);
 									memcount=1;
 									Lroot=NULL;
 									funcid=NULL;										
@@ -122,7 +122,7 @@ ArgId:		ID					{
 							}
 		;		
 				
-Mainblock:	 INT fMAIN '(' ')' '{' LDefblock Body '}'	{codegen($7);
+Mainblock:	 INT fMAIN '(' ')' '{' Body '}'		{codegen($6);
 								fprintf(fp,"HALT\n");
 								fclose(fp);
 								if(Droot!=NULL)
@@ -133,21 +133,12 @@ Mainblock:	 INT fMAIN '(' ')' '{' LDefblock Body '}'	{codegen($7);
 		;
 
 fMAIN:		MAIN					{m3=0;
+							memcount=1;
 							funcid=NULL;
 							fprintf(fp,"main:\nPUSH BP\nMOV BP,SP\n"); 
 							}
 		;
 
-LDefblock:						{}
-
-		|DECL LDefList ENDDECL			{}
-		;
-		
-LDefList:	LDecl					{}
-
-		| LDefList LDecl			{}
-		;
-		
 LDecl:		Type LIdList ';'			{}
 		;
 		
@@ -160,14 +151,12 @@ LId:		ID					{Linstall($1,m,1);
 							}
 		;
 
-Body:		 BEGN stmtlist END			{if(chkret==-1)
-							{
-								printf("\n Missing return statement in function %s()\n",funcid==NULL?"main":funcid->name);
-								exit(0);
+Body:		stmtlist retstmt			{$$=nontermcreate("Body",$1,$2);			
 							}
-							else
-								$$=$2;	
-							chkret=-1;		
+		|retstmt				{$$=nontermcreate("Body",$1,NULL);			
+							}
+		;
+retstmt:	RETURN expr ';'				{$$=maketree($1,$2,NULL,NULL);
 							}
 		;
  	
@@ -189,10 +178,9 @@ stmt:		ids ASG expr ';'	 		{$$=maketree($2,$1,$3,NULL);
 		|IF expr THEN stmtlist ELSE stmtlist ENDIF ';'			{$$=maketree($1,$2,$4,$6);
 										}
 		|WHILE expr DO stmtlist ENDWHILE ';'				{$$=maketree($1,$2,$4,NULL);
-										}		
-		|RETURN expr ';'						{$$=maketree($1,$2,NULL,NULL);
-										chkret=1;
 										}
+		|LDecl					{$$=NULL;
+							}
 		;
 				
 expr:		expr OPER1 expr				{$$=maketree($2,$1,$3,NULL);

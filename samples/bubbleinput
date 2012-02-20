@@ -3,10 +3,7 @@ decl
 enddecl
 integer bubblesort()
 {
-decl
 	integer i,j,k;
-enddecl
-begin
 	i=0;
 	while i<10 do
 		j=0;
@@ -21,14 +18,10 @@ begin
 		i=i+1;
 	endwhile;	
 	return 0;
-end
 }
 integer main()
 {
-decl
 	integer i;
-enddecl
-begin
 	i=0;
 	while i<10 do
 		a[i]=i;
@@ -40,5 +33,4 @@ begin
 		i=i+1;
 	endwhile;
 	return 0;
-end
 }

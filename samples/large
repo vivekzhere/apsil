@@ -2,7 +2,6 @@ decl
 	integer a,b,c,d;
 enddecl
 integer main(){
-begin
 	a=50;
 	b=4;
 	c=17;
@@ -39,6 +38,5 @@ begin
 		endif;
 	endif;
 	return 0;
-end
 }
 
