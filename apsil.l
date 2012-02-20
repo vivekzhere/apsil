@@ -141,21 +141,8 @@ void func(int, char, char*, int);
 			return PRINT;
 			}
 
-"and"			{
-			func(1,'a',NULL,-1);
-			return LOGOP;
-			}
+			
 
-"or"			{
-			func(1,'o',NULL,-1);
-			return LOGOP;
-			}
-			
-"not"			{
-			func(1,'x',NULL,-1);
-			return NEGOP;
-			}
-			
 "return"		{
 			func(2,'u',NULL,-1);
 			return RETURN;
@@ -205,6 +192,22 @@ void func(int, char, char*, int);
 			func(1,'!',NULL,-1);
 			return RELOP;
 			}
+
+
+(&&)			{
+			func(1,'a',NULL,-1);
+			return LOGOP;
+			}
+
+(||)			{
+			func(1,'o',NULL,-1);
+			return LOGOP;
+			}
+(!)			{
+			func(1,'x',NULL,-1);
+			return NEGOP;
+			}
+			
 			
 			
 [a-zA-Z][a-zA-Z0-9]*	{
