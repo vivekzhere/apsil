@@ -68,9 +68,8 @@ The following are the reserved words in APSIL and it cannot be used as  identifi
 \begin{tabular}{c c c c c c }
 \kw{read} & \kw{write} & \kw{if} &   \kw{then} &   \kw{else} &   \kw{endif} \\
 \kw{while} &   \kw{do} &   \kw{endwhile} &   \kw{integer} &	\kw{string} & \kw{main} \\
-\kw{return} &   \kw{and}  &	\kw{or}		&	\kw{not}	&  \kw{decl} &		\kw{enddecl}		 \\
-\kw{begin}	& \kw{end}  &  \kw{Create} &   \kw{Open} &   \kw{Write} &   \kw{Seek} \\
- \kw{Read} & \kw{Close} &   \kw{Delete}   & \kw{Fork} & \kw{Exec} & \kw{Exit} 
+\kw{return} &    \kw{decl} &		\kw{enddecl}  &  \kw{Create}  &   \kw{Open} &   \kw{Write} \\
+  \kw{Seek}  & \kw{Read} & \kw{Close} &   \kw{Delete}    &  \kw{Fork} & \kw{Exec} \\ \kw{Exit} 
 \end{tabular}
 
 
@@ -85,7 +84,7 @@ The following are the operators and delimiters in APSIL   \\
 ( 		 & 		) 		& 		\{		 &		\} 		& 		[		&		 ]    &
 /		 & 		*		 & 		+ 		 & 		-  		& 		\% 		  \\
 \textgreater  & 	   \textless   &  \textgreater = 	 &  \textless =	&	    !=		&	==	  
-  & 		;	&	=  & \kw{and}  	  &		\kw{or}		&	\kw{not}	\\
+  & 		;	&	=  &  \&\&  	  &		$\Vert$	&	!	\\
 \end{tabular}
 
 
@@ -134,12 +133,20 @@ APSIL allows the use of single-dimensional arrays only, i.e. linear arrays. Arra
 \section{Declarations and Scope}
 
 Declarations should be made for  variables and functions defined in the APSIL program.
+
+
+
+
 \subsection{Global Variables}
 Global variables are declared in the first section of the program within a \textbf{decl} ... \textbf{enddecl} block. Global variables can be accessed from any function in the program. Global variables can be of integer, string, integer array or string array datatypes. Global variables are declared with its datatype followed by the variable name. If the variable refers to an array the size of the array must be given in square brackets. The general form of declarations is as follows 
 
 \textit{type variable\_name;} 
 
 \textit{type variable\_name[size];}
+
+
+
+
 
 \subsection{Function Declaration}
 For every function except the \textbf{main()} function defined in a APSIL program, there must be a declaration. All functions have global scope and is declared in the first section within  \textbf{decl} ... \textbf{enddecl} block, along with the global variables.
@@ -161,12 +168,18 @@ enddecl
 
 
 
+
+
 \subsection{Local Variables}
 Local variables can be declared anywhere inside a function definition. Local variables will have a function scope, i.e. it can only be accessed in the function in which it is declared. Arguments of a function are treated as local variables. Local variables can be integer or string. Arrays cannot be declared locally. All globally declared variables are visible inside a function, unless suppressed by a re-declaration. The general form of declarations is as follows \\
 
 \textit{type variable\_name;} 
 
 
+
+
+
+%------------------__Function Definition----------------------_%
 
 \section{Function Definition and Main Function}
 
@@ -182,12 +195,19 @@ type function\_name(ArgumentList) \\ \{ \\
 \\
 The function body must contain a return statement and the return value must be of the return type of the function. The arguments and return type of each function definition should match exactly with the corresponding declaration. Every declared function must have a definition. The signature of the function in the delcaration should match the definition of the function which includes the return type, and the names, passing mehtod and datatypes of the arguments. The language supports recursion and static scope rules apply.
 
+
+
+
 \subsection{main()}
 The \textbf{main()} function must be a zero argument function of type integer. Program execution begins from the body of the \textbf{main()} function. The \textbf{main()} function need not be declared. The \textbf{main()} function definition follows all user-defined function definitions.  The definition part of \textbf{main()} should be given in the same format as any other function.
 
 
+
+%----------------------------_Expressions-------------------------_%
 \section{Expressions}
 An expression specifies the computation of a value by applying operators and functions to operands. Function call in APSIL are treated as expressions, and the value of the expression is its return value. APSIL supports arithmetic and logical expressions
+
+
 
 \subsection{Arithmetic Expressions}
 
@@ -198,7 +218,7 @@ Any integer value, variable, function returning an integer or 2 or more arithmet
 
 Logical expressions may be formed by combining arithmetic expressions using relational operators. The relational operators supported by APSIL are \begin{verbatim}  <, >, <=, >=, ==, !=
 \end{verbatim}
-Standard  meanings apply to these operators. The operators take two arithmetic expressions as operands and the result will be a boolean value, either of 1(true) or 0(false).  Logical expressions themselves may be combined using logical operators \textbf{and}, \textbf{or} \&  \textbf{not}.
+Standard  meanings apply to these operators. The operators take two arithmetic expressions as operands and the result will be a boolean value, either of 1(true) or 0(false).  Logical expressions themselves may be combined using logical operators, \&\& (logical and) ,  $\Vert$ (logical or) and ! (not).
 
 \subsection{Function Call}
 
