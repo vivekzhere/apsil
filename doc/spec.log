@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.1.26)  20 FEB 2012 03:35
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.1.26)  20 FEB 2012 06:32
 entering extended mode
  %&-line parsing enabled.
 **spec.tex
@@ -131,73 +131,164 @@ File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 )
 \c@lstlisting=\count100
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 17.
+(Font)              <12> on input line 19.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 17.
+(Font)              <8> on input line 19.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 17.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 17.
+(Font)              <6> on input line 19.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 19.
 
 (/usr/share/texmf-texlive/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-)
+) [1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 18.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 25.
  (./spec.toc
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10.95> not available
 (Font)              Font shape `OT1/ppl/b/n' tried instead on input line 1.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 6.
+(Font)              <10.95> on input line 5.
 )
 \tf@toc=\write3
 \openout3 = `spec.toc'.
 
- [1
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+ [2]
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 42.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 56.
 
-Underfull \hbox (badness 10000) in paragraph at lines 61--62
+Underfull \hbox (badness 10000) in paragraph at lines 82--83
 
  []
 
-LaTeX Font Info:    Try loading font information for OMS+ppl on input line 64.
+LaTeX Font Info:    Try loading font information for OMS+ppl on input line 85.
 (/usr/share/texmf-texlive/tex/latex/psnfss/omsppl.fd
 File: omsppl.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 64.
-LaTeX Font Info:    Try loading font information for OML+ppl on input line 66.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 85.
+LaTeX Font Info:    Try loading font information for OML+ppl on input line 87.
 
 (/usr/share/texmf-texlive/tex/latex/psnfss/omlppl.fd
 File: omlppl.fd 
 )
 LaTeX Font Info:    Font shape `OML/ppl/m/n' in size <10.95> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 66.
- [2]
-Underfull \hbox (badness 10000) in paragraph at lines 80--86
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 87.
+ [3]
+Underfull \hbox (badness 10000) in paragraph at lines 107--113
 
  []
 
-[3] (./spec.aux) ) 
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 147--148
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 149--153
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 165--166
+
+ []
+
+LaTeX Font Info:    Font shape `OMS/ppl/m/it' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 180.
+
+Underfull \hbox (badness 10000) in paragraph at lines 173--184
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 173--184
+
+ []
+
+[5]
+Overfull \hbox (8.98372pt too wide) in paragraph at lines 190--191
+\OT1/ppl/m/n/10.95 An ex-pres-sion spec-i-fies the com-pu-ta-tion of a value by
+ ap-ply-ing op-er-a-tors and func-tions to operands.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 205--206
+
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 207--209
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 234--235
+
+ []
+
+LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <10.95> not available
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 242.
+
+Underfull \hbox (badness 10000) in paragraph at lines 242--243
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 253--254
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 260--261
+
+ []
+
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 266--267
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 276--277
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 281--282
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 286--287
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 292--293
+
+ []
+
+[8] [9] (./spec.aux) ) 
 Here is how much of TeX's memory you used:
- 1776 strings out of 493848
- 24922 string characters out of 1152823
- 75819 words of memory out of 3000000
- 5064 multiletter control sequences out of 15000+50000
- 17189 words of font info for 47 fonts, out of 3000000 for 9000
+ 1783 strings out of 493848
+ 25019 string characters out of 1152823
+ 78845 words of memory out of 3000000
+ 5070 multiletter control sequences out of 15000+50000
+ 17190 words of font info for 47 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 26i,7n,32p,373b,260s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</usr/s
-hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-
-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fon
-ts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/palat
-ino/uplb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/palatino/uplr8a.pfb></
-usr/share/texmf-texlive/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on spec.pdf (3 pages, 89570 bytes).
+ 26i,6n,32p,828b,843s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</u
+sr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/te
+xmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive
+/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/p
+alatino/uplb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/palatino/uplbi8a.p
+fb></usr/share/texmf-texlive/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/te
+xmf-texlive/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on spec.pdf (9 pages, 123656 bytes).
 PDF statistics:
- 37 PDF objects out of 1000 (max. 8388607)
+ 61 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

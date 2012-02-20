@@ -8,22 +8,30 @@
 
 
 
-\title{APSIL Language Specification\\
+\title{APSIL \\ Language Specification \\
 Version 1.0}
-\author{\texttt{kmurali@nitc.ac.in} \\  \small {NIT Calicut} }
+\author{Dr. K. Muralikrishnan  \\ \texttt{kmurali@nitc.ac.in} \\ {NIT Calicut} }
 
 \begin{document}
  \newcommand{\kw}[1]{\texttt{#1}}
+
+%.......................Title Page.................................>%
 \maketitle
+
+\pagebreak
+%......................Table of Contents............................%
+\thispagestyle{plain}
+
 \tableofcontents
 \pagebreak
+
+%...............................Introduction..........................%
+
 \section{Introduction}
 \paragraph{}
 \textit{APSIL} or \textit{Application Programmer's Simple Integer Language} is a simple and strongly typed programming language. The features and constructs of this language are minimal and mainly intended for testing an experimental operating system. The compiler of APSIL runs on ESIM (\textit{Extended Simple Integer Machine}) architecture.
 \paragraph{}
-This document describes the syntax, semantics and constructs of APSIL in detail. The structure of APSIL is similar in many aspects to programming languages like C and Java. 
-
-\section{General Program Structure}
+This document describes briefly describe the programming constructs, syntax and semantics APSIL. The structure of APSIL is similar in some aspects to programming languages like C and Java. 
 
 A typical APSIL program is orgnaized in the following way. 
 
@@ -37,13 +45,23 @@ Function Definitions
 Main Function
 \end{verbatim}
 
+
+%-----------------------------Lexical Elements-------------------------%
 \section{Lexical Elements}
 
+
+
+
+%*********%
 \subsection{Comments and White Spaces}
 
 APSIL allows only line comments. Line comments start with the character sequence \textbf{//} and stop at the end of the line. 
 White spaces in the program including tabs, newline and horizontal spaces are ignored.
 
+
+
+
+%*********%
 \subsection{Keywords}
 The following are the reserved words in APSIL and it cannot be used as  identifiers.
 
@@ -56,18 +74,24 @@ The following are the reserved words in APSIL and it cannot be used as  identifi
 \end{tabular}
 
 
+
+
+%*********%
 \subsection{Operators and Delimiters}
 
 The following are the operators and delimiters in APSIL   \\
 
 \begin{tabular}{c c c c c c c c c c c c c}
-( 		 & 		) 		& 		\{		 &		\} 		& 		[		&		 ]   
-/		 & 		*		 & 		+ 		 & 		-  		& 		\% 		& 		;   \\
-\textgreater  & 	   \textless   &  \textgreater = 	 &  \textless =	&	    !=		&	==	 
-\kw{and}  	  &		\kw{or}		&	\kw{not}	\\
+( 		 & 		) 		& 		\{		 &		\} 		& 		[		&		 ]    &
+/		 & 		*		 & 		+ 		 & 		-  		& 		\% 		  \\
+\textgreater  & 	   \textless   &  \textgreater = 	 &  \textless =	&	    !=		&	==	  
+  & 		;	&	=  & \kw{and}  	  &		\kw{or}		&	\kw{not}	\\
 \end{tabular}
 
 
+
+
+%*********%
 \subsection{Indentifiers}
 
 Identifiers are names of variables and user-defined functions. Identifiers should start with an alphabet, and may contain both alphabets and digits. Special characters are not allowed in identifiers.
@@ -76,18 +100,23 @@ identifier -> (alphabet)(alphabet | digit)*
 \end{verbatim}
 
 
+
+
+%*********%
 \subsection{Literals}
 There are integer literals and string literals in APSIL. An integer literal is a sequence of digits representing an integer.
-Negative integers are represented with a negative sign preceding the sequence of digits. Any sequence of characters enclosed within double quotes (") are considered as string literals. However APSIL restricts string literals to size of atmost 16 characters. 
+Negative integers are represented with a negative sign preceding the sequence of digits. Any sequence of characters enclosed within double quotes (") are considered as string literals. However APSIL restricts string literals to size of atmost 16 characters including the '\textbackslash 0' character which is implicitly appended at the end of a string value. 
 \\
 \\
 Examples of literals are \texttt{
  19, -35, "Hello World"}
 
+
+%-----------------------------Data Types-------------------------%
 \section{Data Types}
 
 \subsection{Primitive Types}
-There are two primitive data types in APSIL. 
+There are two primitive datatypes in APSIL. 
 \begin{enumerate}
 
 \item \textbf{Integer} : An integer value can range from -32767 to +32768. An integer type variable is declared using the keyword \kw {integer}
@@ -95,5 +124,192 @@ There are two primitive data types in APSIL.
 A string type represents the set of string values. A string value can be atmost 16 characters long. String type variables is declared using the keyword \kw{string}.
 \end{enumerate}
 
+
+\subsection{Arrays}
+Arrays are  sequence of elements of a single type. Arrays can be of \textbf{integer} or \textbf{string} data types.
+APSIL allows the use of single-dimensional arrays only, i.e. linear arrays. Array elements are accessed by the array name followed an index value within square brackets ( e.g. arr[10] ).
+
+
+%-----------------------------Declarations and Scope-------------------------%%
+\section{Declarations and Scope}
+
+Declarations should be made for  variables and functions defined in the APSIL program.
+\subsection{Global Variables}
+Global variables are declared in the first section of the program within a \textbf{decl} ... \textbf{enddecl} block. Global variables can be accessed from any function in the program. Global variables can be of integer, string, integer array or string array datatypes. Global variables are declared with its datatype followed by the variable name. If the variable refers to an array the size of the array must be given in square brackets. The general form of declarations is as follows 
+
+\textit{type variable\_name;} 
+
+\textit{type variable\_name[size];}
+
+\subsection{Function Declaration}
+For every function except the \textbf{main()} function defined in a APSIL program, there must be a declaration. All functions have global scope and is declared in the first section within  \textbf{decl} ... \textbf{enddecl} block, along with the global variables.
+
+A function declaration should specify the name of the function, the name and type of each of its arguments and the return type of the function. A function can have integer/string arguments. Parameters may be passed by value or reference. Arrays cannot be passed as arguments. If a global variable name appears as an argument, then within the scope of the function, the new declaration will be valid and global variable declaration is suppressed. Different functions may have arguments of the same name. However, the same name cannot be given to different arguments in a function. For arguments that are passed by reference, the argument name is preceded by an ampersand(\&) in the function declaration. The return type of a function must be either integer or string. The general form of declarations is as follows \\ 
+
+\textit{type function\_name (type argument1, type argument2...);}
+\\
+\\
+Examples for global declarations
+\begin{lstlisting}
+decl
+	integer x,y,a[10],b[20];	
+	integer f1(integer a1,a2; string b1; integer &c1), f2(); 
+	string t, q[10], f3(integer x); 
+	integer swap(integer &x, &y);	 
+enddecl
+\end{lstlisting}
+
+
+
+\subsection{Local Variables}
+Local variables can be declared anywhere inside a function definition. Local variables will have a function scope, i.e. it can only be accessed in the function in which it is declared. Arguments of a function are treated as local variables. Local variables can be integer or string. Arrays cannot be declared locally. All globally declared variables are visible inside a function, unless suppressed by a re-declaration. The general form of declarations is as follows \\
+
+\textit{type variable\_name;} 
+
+
+
+\section{Function Definition and Main Function}
+
+Every APSIL program must have a \textbf{main()} function and zero or more user-defined functions. Every function other than the \textbf{main()} function must be declared within the \textbf{decl ... enddecl} block. The general form of a function definition is given below 
+\\
+\\
+\textit{
+type function\_name(ArgumentList) \\ \{ \\
+  Function Body \\
+\}
+}
+\\
+\\
+The function body must contain a return statement and the return value must be of the return type of the function. The arguments and return type of each function definition should match exactly with the corresponding declaration. Every declared function must have a definition. The signature of the function in the delcaration should match the definition of the function which includes the return type, and the names, passing mehtod and datatypes of the arguments. The language supports recursion and static scope rules apply.
+
+\subsection{main()}
+The \textbf{main()} function must be a zero argument function of type integer. Program execution begins from the body of the \textbf{main()} function. The \textbf{main()} function need not be declared. The \textbf{main()} function definition follows all user-defined function definitions.  The definition part of \textbf{main()} should be given in the same format as any other function.
+
+
+\section{Expressions}
+An expression specifies the computation of a value by applying operators and functions to operands. Function call in APSIL are treated as expressions, and the value of the expression is its return value. APSIL supports arithmetic and logical expressions
+
+\subsection{Arithmetic Expressions}
+
+Any integer value, variable, function returning an integer or 2 or more arithmetic expressions connected by arithmetic operators termed as arithmetic expressions. APSIL provides five arithmetic operators, viz., +, -, *, / (Integer Division) and \% (Modulo operator) through which arithmetic expressions may be combined. Expression syntax and semantics are similar to standard practice in programming languages and normal rules of precedence, associativity and paranthesization hold. APSIL is strongly typed, and hence the types of the oprands must match the operation. 
+
+
+\subsection{Logical Expressions}
+
+Logical expressions may be formed by combining arithmetic expressions using relational operators. The relational operators supported by APSIL are \begin{verbatim}  <, >, <=, >=, ==, !=
+\end{verbatim}
+Standard  meanings apply to these operators. The operators take two arithmetic expressions as operands and the result will be a boolean value, either of 1(true) or 0(false).  Logical expressions themselves may be combined using logical operators \textbf{and}, \textbf{or} \&  \textbf{not}.
+
+\subsection{Function Call}
+
+All functions except the \textbf{main()} function can be invoked from any other function including itself. The general form of a function call is \\
+
+\textit{function\_name(value1,value1...);}
+\\
+
+Function calls are treated as expressions. The function takes in the values of its arguments and returns a value of type equal to the return type of the function. This value is treated as the evaluated result of the function call.
+
+
+
+
+%-----------------________Statements---------------------------_%
+\section{Statements}
+
+Statements control the execution of the program. All statements in APSIL are terminated with a semicolon ;
+
+
+
+
+
+\subsection{Assignment Statement}
+The APSIL assignment statement assigns the value of an expression to a variable, or an indexed array of the same type or a string value to a string variable. \textbf{=} is known as the assignment operator. Initialization during declaration is not allowed in APSIL. The general syntax is as follows \\
+\textit{ variable\_name = string\_value / array\_variable / expression }
+
+
+
+
+
+
+\subsection{If Statement}
+\textbf{If} statements specify the conditional execution of two branches according to the value of a boolean expression. If the expression evaluates to true, the \textbf{if} branch is executed, otherwise, if present, the \textbf{else}  branch is executed. The \textbf{else} part is optional. The general syntax is as follows  \\
+
+\textit{
+\textbf{if} (logical expression) \textbf{then}  \\
+ \indent \indent statements; \\
+\indent \textbf{else} \\
+\indent  \indent statements; \\
+\indent \textbf{endif}  \\
+}
+
+
+
+\subsection{While Statement}
+\textbf{While} statement iteratively executes a set of statements based on a condition which is a logical expression.  The statements are iteratively executed as long as the logical expression evaluates to true.
+
+\textit{
+\textbf{while} (logical expression) \textbf{do}  \\
+ \indent \indent statements; \\
+\indent \textbf{endwhile}  \\
+}
+
+
+
+
+
+\subsection{Return statement}
+\textbf{Return} statement in a function passes the control from the callee to the caller function and returns a value to the caller function. All functions including the \textbf{main()} must have a \textbf{return} statement. The return type should match the type of the expression. The return type of main is integer. The syntax is as follows\\
+
+\textit{\textbf{return} expression;}
+
+
+\subsection{Read/Write statements}
+The standard input and output statements in APSIL are \textbf{read} and \textbf{write} respectively. The read statement reads an integer value from the standard input device into an integer variable or an indexed array variable or a string value into a string variable. The write statement outputs a string literal or the value of string variable or an arithmetic expression  into the standard output.\\
+
+\textit{\textbf{read} variable\_name;}
+
+\textit{\textbf{write} expression / string;}
+
+\section{System Calls}
+
+System Calls allow the programs written in APSIL to interact with the operating system running on the ESIM architecture. 10 System Calls are supported by APSIL. 
+\subsection{Create}
+Creates a file with the specified filename in the filessytem and returns the file descriptor of the newly created file. The file descriptor is an integer value. It will return -1 if error occurs on creation of the file\\
+
+\textit{integer \textbf{Create}(string filename);}
+
+\subsection{Open}
+Returns a file descriptor of the file in the filesystem with the specified filename. If the file does not exist or if there is an error while opening the file it returns -1.\\
+
+\textit{integer \textbf{Open}(string fileName);}
+
+\subsection{Read}
+Reads the specified number of words(16 bytes) from a file which has the specified file descriptor into a string array. \\
+
+\textit{integer \textbf{Read}(integer fileDescriptor, string buffer, integer numWords);}
+
+
+\subsection{Write}
+Writes the specified number of words from the string buffer to a file in the filesystem with the specified file descriptor.\\
+
+\textit{integer \textbf{Write}(integer fileDescriptor, string buffer, integer numWords);}
+
+\subsection{Seek}
+\textit{integer \textbf{Seek}(integer fileDescriptor, integer lseek);}
+ 
+ \subsection{Close}
+\textit{integer \textbf{Close}(integer fileDescriptor);}
+
+\subsection{Delete}
+\textit{integer \textbf{Delete}(string fileName);}
+
+
+\subsection{Fork}
+\textit{integer \textbf{Fork}();}
+
+\subsection{Exec}
+\textit{integer \textbf{Exec}(string fileName);}
+
+\subsection{Exit}
+\textit{integer \textbf{Exit}();}
 
 \end{document}
