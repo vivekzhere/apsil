@@ -1,39 +1,39 @@
-\contentsline {section}{\numberline {1}Introduction}{3}
-\contentsline {paragraph}{}{3}
-\contentsline {paragraph}{}{3}
-\contentsline {section}{\numberline {2}Lexical Elements}{3}
-\contentsline {subsection}{\numberline {2.1}Comments and White Spaces}{3}
-\contentsline {subsection}{\numberline {2.2}Keywords}{3}
-\contentsline {subsection}{\numberline {2.3}Operators and Delimiters}{3}
-\contentsline {subsection}{\numberline {2.4}Indentifiers}{4}
-\contentsline {subsection}{\numberline {2.5}Literals}{4}
-\contentsline {section}{\numberline {3}Data Types}{4}
-\contentsline {subsection}{\numberline {3.1}Primitive Types}{4}
-\contentsline {subsection}{\numberline {3.2}Arrays}{4}
-\contentsline {section}{\numberline {4}Declarations and Scope}{4}
-\contentsline {subsection}{\numberline {4.1}Global Variables}{4}
-\contentsline {subsection}{\numberline {4.2}Function Declaration}{5}
-\contentsline {subsection}{\numberline {4.3}Local Variables}{5}
-\contentsline {section}{\numberline {5}Function Definition and Main Function}{5}
-\contentsline {subsection}{\numberline {5.1}main()}{6}
-\contentsline {section}{\numberline {6}Expressions}{6}
-\contentsline {subsection}{\numberline {6.1}Arithmetic Expressions}{6}
-\contentsline {subsection}{\numberline {6.2}Logical Expressions}{6}
-\contentsline {subsection}{\numberline {6.3}Function Call}{7}
-\contentsline {section}{\numberline {7}Statements}{7}
-\contentsline {subsection}{\numberline {7.1}Assignment Statement}{7}
-\contentsline {subsection}{\numberline {7.2}If Statement}{7}
-\contentsline {subsection}{\numberline {7.3}While Statement}{7}
-\contentsline {subsection}{\numberline {7.4}Return statement}{8}
-\contentsline {subsection}{\numberline {7.5}Read/Write statements}{8}
-\contentsline {section}{\numberline {8}System Calls}{8}
-\contentsline {subsection}{\numberline {8.1}Create}{8}
-\contentsline {subsection}{\numberline {8.2}Open}{8}
-\contentsline {subsection}{\numberline {8.3}Read}{8}
-\contentsline {subsection}{\numberline {8.4}Write}{9}
-\contentsline {subsection}{\numberline {8.5}Seek}{9}
-\contentsline {subsection}{\numberline {8.6}Close}{9}
-\contentsline {subsection}{\numberline {8.7}Delete}{9}
-\contentsline {subsection}{\numberline {8.8}Fork}{9}
-\contentsline {subsection}{\numberline {8.9}Exec}{9}
-\contentsline {subsection}{\numberline {8.10}Exit}{9}
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}
+\contentsline {paragraph}{}{3}{section*.2}
+\contentsline {paragraph}{}{3}{section*.3}
+\contentsline {section}{\numberline {2}Lexical Elements}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}Comments and White Spaces}{3}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Keywords}{3}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Operators and Delimiters}{3}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Indentifiers}{3}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Literals}{4}{subsection.2.5}
+\contentsline {section}{\numberline {3}Data Types}{4}{section.3}
+\contentsline {subsection}{\numberline {3.1}Primitive Types}{4}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Arrays}{4}{subsection.3.2}
+\contentsline {section}{\numberline {4}Declarations and Scope}{4}{section.4}
+\contentsline {subsection}{\numberline {4.1}Global Variables}{4}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Function Declaration}{5}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Local Variables}{5}{subsection.4.3}
+\contentsline {section}{\numberline {5}Function Definition and Main Function}{5}{section.5}
+\contentsline {subsection}{\numberline {5.1}main()}{6}{subsection.5.1}
+\contentsline {section}{\numberline {6}Expressions}{6}{section.6}
+\contentsline {subsection}{\numberline {6.1}Arithmetic Expressions}{6}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Logical Expressions}{6}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}Function Call}{6}{subsection.6.3}
+\contentsline {section}{\numberline {7}Statements}{7}{section.7}
+\contentsline {subsection}{\numberline {7.1}Assignment Statement}{7}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}If Statement}{7}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.3}While Statement}{7}{subsection.7.3}
+\contentsline {subsection}{\numberline {7.4}Return statement}{7}{subsection.7.4}
+\contentsline {subsection}{\numberline {7.5}Read/Write statements}{8}{subsection.7.5}
+\contentsline {section}{\numberline {8}System Calls}{8}{section.8}
+\contentsline {subsection}{\numberline {8.1}Create}{8}{subsection.8.1}
+\contentsline {subsection}{\numberline {8.2}Open}{8}{subsection.8.2}
+\contentsline {subsection}{\numberline {8.3}Read}{8}{subsection.8.3}
+\contentsline {subsection}{\numberline {8.4}Write}{8}{subsection.8.4}
+\contentsline {subsection}{\numberline {8.5}Seek}{9}{subsection.8.5}
+\contentsline {subsection}{\numberline {8.6}Close}{9}{subsection.8.6}
+\contentsline {subsection}{\numberline {8.7}Delete}{9}{subsection.8.7}
+\contentsline {subsection}{\numberline {8.8}Fork}{9}{subsection.8.8}
+\contentsline {subsection}{\numberline {8.9}Exec}{9}{subsection.8.9}
+\contentsline {subsection}{\numberline {8.10}Exit}{9}{subsection.8.10}

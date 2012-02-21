@@ -5,12 +5,20 @@
 \usepackage{tabularx}
 \usepackage{listings}
 \usepackage{verbatim}
-
+\usepackage[bookmarks]{hyperref}
 
 
 \title{APSIL \\ Language Specification \\
 Version 1.0}
 \author{Dr. K. Muralikrishnan  \\ \texttt{kmurali@nitc.ac.in} \\ {NIT Calicut} }
+
+
+\hypersetup{
+colorlinks=false,
+urlcolor=cyan,
+pdfborder= 0 0 0
+}
+
 
 \begin{document}
  \newcommand{\kw}[1]{\texttt{#1}}
@@ -37,11 +45,9 @@ A typical APSIL program is orgnaized in the following way.
 
 \begin{verbatim}
 Global Declarations
-. 
-. 
+...
 Function Definitions
-.
-. 
+...
 Main Function
 \end{verbatim}
 
@@ -151,7 +157,7 @@ Global variables are declared in the first section of the program within a \text
 \subsection{Function Declaration}
 For every function except the \textbf{main()} function defined in a APSIL program, there must be a declaration. All functions have global scope and is declared in the first section within  \textbf{decl} ... \textbf{enddecl} block, along with the global variables.
 
-A function declaration should specify the name of the function, the name and type of each of its arguments and the return type of the function. A function can have integer/string arguments. Parameters may be passed by value or reference. Arrays cannot be passed as arguments. If a global variable name appears as an argument, then within the scope of the function, the new declaration will be valid and global variable declaration is suppressed. Different functions may have arguments of the same name. However, the same name cannot be given to different arguments in a function. For arguments that are passed by reference, the argument name is preceded by an ampersand(\&) in the function declaration. The return type of a function must be either integer or string. The general form of declarations is as follows \\ 
+A function declaration should specify the name of the function, the name and type of each of its arguments and the return type of the function. A function can have integer/string arguments. Parameters may be passed by value or reference. Arrays cannot be passed as arguments. If a global variable name appears as an argument, then within the scope of the function, the new declaration will be valid and global variable declaration is suppressed. Different functions may have arguments of the same name. For arguments that are passed by reference, the argument name is preceded by an ampersand(\&) in the function declaration. The return type of a function must be either integer or string. The general form of declarations is as follows \\ 
 
 \textit{type function\_name (type1 argument1,argument2,...; type2 argument1,argument2,...;...);}
 \\
@@ -218,7 +224,7 @@ Any integer value, variable, function returning an integer or 2 or more arithmet
 
 Logical expressions may be formed by combining arithmetic expressions using relational operators. The relational operators supported by APSIL are \begin{verbatim}  <, >, <=, >=, ==, !=
 \end{verbatim}
-Standard  meanings apply to these operators. The operators take two arithmetic expressions as operands and the result will be a boolean value, either of 1(true) or 0(false).  Logical expressions themselves may be combined using logical operators, \&\& (logical and) ,  $\Vert$ (logical or) and ! (not).
+Standard  meanings apply to these operators. The operators take two arithmetic expressions as operands and the result will be a boolean value, either of 1(true) or 0(false). Only realational operator that can be applied to two strings is == (to check equality). This also considered as a Logical expression. Logical expressions themselves may be combined using logical operators, \&\& (logical and) ,  $\Vert$ (logical or) and ! (not).
 
 \subsection{Function Call}
 
@@ -258,7 +264,7 @@ The APSIL assignment statement assigns the value of an expression to a variable,
  \indent \indent statements; \\
 \indent \textbf{else} \\
 \indent  \indent statements; \\
-\indent \textbf{endif}  \\
+\indent \textbf{endif;}  \\
 }
 
 
@@ -269,7 +275,7 @@ The APSIL assignment statement assigns the value of an expression to a variable,
 \textit{
 \textbf{while} (logical expression) \textbf{do}  \\
  \indent \indent statements; \\
-\indent \textbf{endwhile}  \\
+\indent \textbf{endwhile;}  \\
 }
 
 
@@ -289,47 +295,103 @@ The standard input and output statements in APSIL are \textbf{read} and \textbf{
 
 \textit{\textbf{write} expression / string;}
 
+
+
+
+
+
 \section{System Calls}
 
 System Calls allow the programs written in APSIL to interact with the operating system running on the ESIM architecture. 10 System Calls are supported by APSIL. 
+
+
+
+
 \subsection{Create}
-Creates a file with the specified filename in the filessytem and returns the file descriptor of the newly created file. The file descriptor is an integer value. It will return -1 if error occurs on creation of the file\\
+Creates a file with the specified filename in the filesystem. The return value of this system call is 0 in case of success and the appropriate error code in case of failure.
+\\
 
 \textit{integer \textbf{Create}(string filename);}
 
+
+
+
+
+
 \subsection{Open}
-Returns a file descriptor of the file in the filesystem with the specified filename. If the file does not exist or if there is an error while opening the file it returns -1.\\
+Returns a file descriptor of the file in the filesystem with the specified filename. The file descriptor is an integer value. If the \textbf{Open} fails, an appropriate error code is returned.
+.\\
 
 \textit{integer \textbf{Open}(string fileName);}
 
-\subsection{Read}
-Reads the specified number of words(16 bytes) from a file which has the specified file descriptor into a string array. \\
 
-\textit{integer \textbf{Read}(integer fileDescriptor, string buffer, integer numWords);}
+
+
+
+\subsection{Read}
+Reads the specified number of words(16 bytes) from a file which has the specified file descriptor into a string array. The return value of this system call is the number of words successfully read. If the \textbf{Read} fails, an appropriate error code is returned.\\
+
+\textit{integer \textbf{Read}(integer fileDescriptor, string buffer[], integer numWords);}
+
+
+
 
 
 \subsection{Write}
-Writes the specified number of words from the string buffer to a file in the filesystem with the specified file descriptor.\\
+Writes the specified number of words from the string buffer to a file in the filesystem with the specified file descriptor. The return value of this system call is the number of words successfully written. If the \textbf{Write} fails, an appropriate error code is returned.\\
 
-\textit{integer \textbf{Write}(integer fileDescriptor, string buffer, integer numWords);}
+\textit{integer \textbf{Write}(integer fileDescriptor, string buffer[], integer numWords);}
+
+
+
+
 
 \subsection{Seek}
-\textit{integer \textbf{Seek}(integer fileDescriptor, integer lseek);}
+
+\textbf{Seek} is used to change the read/write head position in a file. It moves the head to the specified number of words from the beginning of the file. The return value of this system call is 0 in case of success and the appropriate error code in case of failure.\\
+
+\textit{integer \textbf{Seek}(integer fileDescriptor, integer numWords);}
+ 
+ 
+ 
  
  \subsection{Close}
+This system call is used to close an open file. The return value of this system call is 0 in case of success and the appropriate error code in case of failure.\\
+
 \textit{integer \textbf{Close}(integer fileDescriptor);}
 
+
+
+
 \subsection{Delete}
+This system call is used to delete the file from the file system whose name is specified in the
+argument. The return value of this system call is 0 in case of success and the appropriate error code in case
+of failure.\\
+
 \textit{integer \textbf{Delete}(string fileName);}
 
 
+
 \subsection{Fork}
+This system call is used to create a copy of the current process in the system. The return value of this system call is the PID of the child process for the parent, and 0 for the child.
+
+
 \textit{integer \textbf{Fork}();}
 
+
+
+
 \subsection{Exec}
+This system call is used to load the program, whose name is specified in the argument, in the
+memory space of the current process and start its execution. The return value of this system call is 1 in case of failure.
 \textit{integer \textbf{Exec}(string fileName);}
 
+
+
+
 \subsection{Exit}
+This system call is used to terminate the execution of the process which invoked it and remove it from the memory.
+
 \textit{integer \textbf{Exit}();}
 
 \end{document}
