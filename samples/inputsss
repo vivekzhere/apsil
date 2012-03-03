@@ -1,115 +1,89 @@
 decl
-integer a;
-integer swap(integer &x,&y);
+	integer a;
+	integer swap(integer &x,&y);
 enddecl
 integer swap(integer &x,&y)
 {
-begin
-x=x+y;
-y=x-y;
-x=x-y;
-return 0;
-end
+	x=x+y;
+	y=x-y;
+	x=x-y;
+	return 0;
 }
 integer main()
 {
-decl
-integer b,c;
-enddecl
-begin
-read(a);
-read(b);
-c=swap(a,b);
-write(a);
-write(b);
-return(0); 
-end
+	integer b,c;
+	read(a);
+	read(b);
+	c=swap(a,b);
+	write(a);
+	write(b);
+	return(0); 
 }
 
 ////////////////////////////
 decl
-integer swap(integer x,y);
+	integer swap(integer x,y);
 enddecl
 integer swap(integer x,y)
 {
-begin
-x=x+y;
-y=x-y;
-x=x-y;
-write(x);
-write(y);
-return (x+y);
-end
+	x=x+y;
+	y=x-y;
+	x=x-y;
+	write(x);
+	write(y);
+	return (x+y);
 }
 integer main()
 {
-decl
-integer a,b,s;
-enddecl
-begin
-read(a);
-read(b);
-s=swap(a,b);
-write(s);
-return 0;
-end
+	integer a,b,s;
+	read(a);
+	read(b);
+	s=swap(a,b);
+	write(s);
+	return 0;
 }
 //////////////////////////////////////////////
 decl
-integer f1(integer a,b; boolean c,d; integer e,f,g);
+	integer f1(integer a,b; boolean c,d; integer e,f,g);
 enddecl
 integer f1(integer a,b; boolean c,d; integer e,f,g)
 {
-decl 
-integer x;
-boolean y;
-integer z,p;
-enddecl
-begin
-write(5);
-return 0;
-end
+	integer x;
+	boolean y;
+	integer z,p;
+	enddecl
+	begin
+	write(5);
+	return 0;
 }
 integer main()
 {
-decl
-integer a,b,c,d,e,f;
-boolean g,h;
-enddecl
-begin
-write(2);
-a=f1(b,c,g,h,d,e,f);
-return 0;
-end
+	integer a,b,c,d,e,f;
+	boolean g,h;
+	write(2);
+	a=f1(b,c,g,h,d,e,f);
+	return 0;
 }
 
 
 /////////////////////////
 decl
-integer f1(integer a,b),k;
+	integer f1(integer a,b),k;
 enddecl
 integer f1(integer a,b)
 {
-decl
-integer x,y;
-enddecl
-begin
-x=a;
-y=b;
-return 0;
-end
+	integer x,y;
+	x=a;
+	y=b;
+	return 0;
 }
 integer main()
 {
-decl 
-integer p;
-enddecl
-begin
-read(p);
-p=f1(p,10);
-write(p);
-return 0;
-end
+	integer p;
+	read(p);
+	p=f1(p,10);
+	write(p);
+	return 0;
 }
 
 

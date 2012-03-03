@@ -69,7 +69,6 @@ Fdef:		RType fID '(' fArgList ')' '{' Body '}'	{/*struct Lsymbol *temp=Lroot;
 										temp=temp->next;
 									}*/
 									codegen($7);
-									memcount=1;
 									Lroot=NULL;
 									funcid=NULL;										
 									}
