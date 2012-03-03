@@ -255,8 +255,8 @@ int main (void)
 {	
 	fp=fopen("./ap.sim","w");
 	fprintf(fp,"START\n");
-	fprintf(fp,"MOV SP,0\n");
-	fprintf(fp,"MOV BP,0\n");	
+	fprintf(fp,"MOV SP,768\n");
+	fprintf(fp,"MOV BP,768\n");	
 	return yyparse();
 }
 

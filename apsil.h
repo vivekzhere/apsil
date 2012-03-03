@@ -368,9 +368,7 @@ void codegen(struct tree * root)
 					fprintf(fp,"MOV [R%d],R%d\n",regcount-1,regcount-2);
 				regcount=regcount-2;
 				endfn();
-			}
-			else
-				fprintf(fp,"HALT\n");
+			}			
 			break;
 		case 'C':	//Create syscall
 		case 'O':	//Open syscall
