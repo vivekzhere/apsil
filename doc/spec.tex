@@ -177,7 +177,7 @@ enddecl
 
 
 \subsection{Local Variables}
-Local variables can be declared anywhere inside a function definition. Local variables will have a function scope, i.e. it can only be accessed in the function in which it is declared. Arguments of a function are treated as local variables. Local variables can be integer or string. Arrays cannot be declared locally. All globally declared variables are visible inside a function, unless suppressed by a re-declaration. The general form of declarations is as follows \\
+Local variables can be declared anywhere inside a function definition except in the body of \textbf{if} and \textbf{while}. Local variables will have a function scope, i.e. it can only be accessed in the function in which it is declared. Arguments of a function are treated as local variables. Local variables can be integer or string. Arrays cannot be declared locally. All globally declared variables are visible inside a function, unless suppressed by a re-declaration. The general form of declarations is as follows \\
 
 \textit{type variable\_name;} 
 

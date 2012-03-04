@@ -1,6 +1,5 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.1.18)  21 FEB 2012 14:12
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.1.26)  5 MAR 2012 00:54
 entering extended mode
- file:line:error style messages enabled.
  %&-line parsing enabled.
 **spec.tex
 (./spec.tex
@@ -259,8 +258,6 @@ Package: refcount 2008/08/11 v3.1 Data extraction from references (HO)
 )
 LaTeX Info: Redefining \ref on input line 23.
 LaTeX Info: Redefining \pageref on input line 23.
- (./spec.out)
-(./spec.out)
 \@outlinefile=\write3
 \openout3 = `spec.out'.
 
@@ -272,7 +269,8 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 27.
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 27.
- (/usr/share/texmf-texlive/tex/latex/psnfss/ot1pcr.fd
+
+(/usr/share/texmf-texlive/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 ) [1
 
@@ -352,12 +350,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 231--232
 
  []
 
-
+[6]
 Underfull \hbox (badness 10000) in paragraph at lines 233--235
 
  []
 
-[6]
+
 Underfull \hbox (badness 10000) in paragraph at lines 260--261
 
  []
@@ -419,25 +417,25 @@ Underfull \hbox (badness 10000) in paragraph at lines 367--370
 
  []
 
-[9] (./spec.aux) ) 
+[9] [10] (./spec.aux) ) 
 Here is how much of TeX's memory you used:
- 5068 strings out of 493848
- 74677 string characters out of 1152823
+ 5027 strings out of 493848
+ 74093 string characters out of 1152823
  147452 words of memory out of 3000000
- 8220 multiletter control sequences out of 15000+50000
+ 8182 multiletter control sequences out of 15000+50000
  17190 words of font info for 47 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
  38i,7n,36p,751b,848s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</usr/s
-hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-
-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fon
-ts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/palat
-ino/uplb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/palatino/uplbi8a.pfb><
-/usr/share/texmf-texlive/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/texmf-
-texlive/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on spec.pdf (9 pages, 147779 bytes).
+{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</
+usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/t
+exmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texliv
+e/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/
+palatino/uplb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/palatino/uplbi8a.
+pfb></usr/share/texmf-texlive/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/t
+exmf-texlive/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on spec.pdf (10 pages, 139457 bytes).
 PDF statistics:
- 284 PDF objects out of 1000 (max. 8388607)
- 59 named destinations out of 1000 (max. 500000)
- 297 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 176 PDF objects out of 1000 (max. 8388607)
+ 60 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
