@@ -9,7 +9,7 @@
 	struct ArgStruct *arg;
 }
 %token NUM OPER1 OPER2 ID INT STR STRING MAIN BEGN END DECL ENDDECL ASG READ PRINT RELOP LOGOP NEGOP IF ELSE THEN ENDIF WHILE DO ENDWHILE RETURN SYSCREA SYSOPEN SYSWRIT SYSSEEK SYSREAD SYSCLOS SYSDELE SYSFORK SYSEXEC SYSEXIT
-%type<n> stmtlist param stmt retstmt expr ids fID Body SysCall NUM STRING OPER1 OPER2 ID ASG READ PRINT RELOP LOGOP NEGOP IF WHILE RETURN SYSCREA SYSOPEN SYSWRIT SYSSEEK SYSREAD SYSCLOS SYSDELE SYSFORK SYSEXEC SYSEXIT
+%type<n> stmtlist param stmt retstmt expr ids fID Body SysCall NUM STRING OPER1 OPER2 ID ASG READ PRINT RELOP LOGOP NEGOP IF WHILE RETURN SYSCREA SYSOPEN SYSWRIT SYSSEEK SYSREAD SYSCLOS SYSDELE SYSFORK SYSEXEC SYSEXIT ifpad whilepad
 %type<arg> ArgId ArgIdList ArgDecl ArgList fArgList
 %left LOGOP
 %left RELOP  
@@ -172,13 +172,25 @@ stmt:		ids ASG expr ';'	 		{$$=maketree($2,$1,$3,NULL);
 		|PRINT '(' expr ')' ';'			{$$=maketree($1,$3,NULL,NULL);
 							}
 		
-		|IF expr THEN stmtlist ENDIF ';'				{$$=maketree($1,$2,$4,NULL);
+		|ifpad expr THEN stmtlist ENDIF ';'				{$$=maketree($1,$2,$4,NULL);flag_decl--;
 										}
-		|IF expr THEN stmtlist ELSE stmtlist ENDIF ';'			{$$=maketree($1,$2,$4,$6);
+		|ifpad expr THEN stmtlist ELSE stmtlist ENDIF ';'		{$$=maketree($1,$2,$4,$6);flag_decl--;
 										}
-		|WHILE expr DO stmtlist ENDWHILE ';'				{$$=maketree($1,$2,$4,NULL);
+		|whilepad expr DO stmtlist ENDWHILE ';'				{$$=maketree($1,$2,$4,NULL);flag_decl--;
 										}
 		|LDecl					{$$=NULL;
+							}
+		;
+
+ifpad:		IF					{
+								flag_decl++;
+								$$=$1;
+							}
+		;
+
+whilepad:	WHILE					{
+								flag_decl++;
+								$$=$1;
 							}
 		;
 				

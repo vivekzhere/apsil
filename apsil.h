@@ -2,6 +2,7 @@
 #define TRUE 1
 #define FALSE 0
 extern int linecount;
+int flag_decl=0;
 int m=-1,m2=-1,m3=-1; //m-variable type, m2-argtype, m3-returntype of function
 struct tree *funcid=NULL;
 int memcount=768,regcount=0,datacount=512;
@@ -827,6 +828,11 @@ void Linstall(struct tree *node,int type,int size)
 {
 	struct Lsymbol * temp;
 	temp=Llookup(node->name);
+	if(flag_decl!=0)
+	{
+		printf("\n%d: Declaration of variable cannot be made inside if or while !!\n",linecount);
+		exit(0);
+	}
 	if(temp==NULL)
 	{
 		temp=malloc(sizeof(struct Lsymbol));
