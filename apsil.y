@@ -122,7 +122,7 @@ ArgId:		ID					{
 		;		
 				
 Mainblock:	 INT fMAIN '(' ')' '{' Body '}'		{codegen($6);
-								fprintf(fp,"HALT\n");
+								fprintf(fp,"OVER\n");
 								fclose(fp);
 								if(Droot!=NULL)
 					 				filearea();						
