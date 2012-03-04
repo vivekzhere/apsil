@@ -19,18 +19,18 @@
 \contentsline {section}{\numberline {6}Expressions}{6}{section.6}
 \contentsline {subsection}{\numberline {6.1}Arithmetic Expressions}{6}{subsection.6.1}
 \contentsline {subsection}{\numberline {6.2}Logical Expressions}{6}{subsection.6.2}
-\contentsline {subsection}{\numberline {6.3}Function Call}{6}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.3}Function Call}{7}{subsection.6.3}
 \contentsline {section}{\numberline {7}Statements}{7}{section.7}
 \contentsline {subsection}{\numberline {7.1}Assignment Statement}{7}{subsection.7.1}
 \contentsline {subsection}{\numberline {7.2}If Statement}{7}{subsection.7.2}
 \contentsline {subsection}{\numberline {7.3}While Statement}{7}{subsection.7.3}
-\contentsline {subsection}{\numberline {7.4}Return statement}{7}{subsection.7.4}
+\contentsline {subsection}{\numberline {7.4}Return statement}{8}{subsection.7.4}
 \contentsline {subsection}{\numberline {7.5}Read/Write statements}{8}{subsection.7.5}
 \contentsline {section}{\numberline {8}System Calls}{8}{section.8}
 \contentsline {subsection}{\numberline {8.1}Create}{8}{subsection.8.1}
 \contentsline {subsection}{\numberline {8.2}Open}{8}{subsection.8.2}
 \contentsline {subsection}{\numberline {8.3}Read}{8}{subsection.8.3}
-\contentsline {subsection}{\numberline {8.4}Write}{8}{subsection.8.4}
+\contentsline {subsection}{\numberline {8.4}Write}{9}{subsection.8.4}
 \contentsline {subsection}{\numberline {8.5}Seek}{9}{subsection.8.5}
 \contentsline {subsection}{\numberline {8.6}Close}{9}{subsection.8.6}
 \contentsline {subsection}{\numberline {8.7}Delete}{9}{subsection.8.7}
