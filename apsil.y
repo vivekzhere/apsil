@@ -265,7 +265,7 @@ SysCall:	SYSCREA '(' param ')'			{$$=syscheck($1,$3,1);
 
 int main (void)
 {	
-	fp=fopen("./ap.sim","w");
+	fp=fopen("./apcode.esim","w");
 	fprintf(fp,"START\n");
 	fprintf(fp,"MOV SP,768\n");
 	fprintf(fp,"MOV BP,768\n");	
