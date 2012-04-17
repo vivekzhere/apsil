@@ -542,7 +542,6 @@ void codegen(struct tree * root)
 			}			
 			fprintf(fp,"POP BP\n");
 			fprintf(fp,"POP R%d\n",regcount);
-			regcount++;
 			break;
 		default:
 			return;

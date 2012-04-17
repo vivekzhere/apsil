@@ -180,6 +180,8 @@ stmt:		ids ASG expr ';'	 		{$$=maketree($2,$1,$3,NULL);
 										}
 		|LDecl					{$$=NULL;
 							}
+		|SYSEXIT '(' ')'			{$$=$1;
+							}
 		;
 
 ifpad:		IF					{
@@ -256,9 +258,7 @@ SysCall:	SYSCREA '(' param ')'			{$$=syscheck($1,$3,1);
 		|SYSFORK '(' ')'			{$$=$1;
 							}
 		|SYSEXEC '(' param ')'			{$$=syscheck($1,$3,1);
-							}
-		|SYSEXIT '(' ')'			{$$=$1;
-							}
+							}		
 		;
 		
 %%
