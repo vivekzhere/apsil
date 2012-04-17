@@ -67,7 +67,7 @@ struct label
 	int i;
 	struct label *next; 
 };
-struct label *top=NULL;
+struct label *top=NULL,*top_while=NULL;
 void push()
 {
 	struct label *temp;
@@ -86,6 +86,21 @@ int pop()
 	i=temp->i;
 	free(temp);
 	return i;
+}
+void push_while(int n)
+{
+	struct label *temp;
+	temp=malloc(sizeof(struct label));
+	temp->i=n;
+	temp->next=top_while;
+	top_while=temp;
+}
+void pop_while()
+{	
+	struct label *temp;
+	temp=top_while;
+	top_while=top_while->next;
+	free(temp);
 }
 struct tree * makedata(struct tree *a)
 {
@@ -327,7 +342,7 @@ void codegen(struct tree * root)
 			break;
 		case 'w':	//WHILE loop
 			push();
-			flag_break=top->i;
+			push_while(top->i);
 			fprintf(fp,"la%d:\n",top->i);
 			codegen(root->ptr1);
 			fprintf(fp,"JZ R%d,lb%d\n",regcount-1,top->i);
@@ -335,12 +350,13 @@ void codegen(struct tree * root)
 			codegen(root->ptr2);
 			fprintf(fp,"JMP la%d\n",top->i);
 			fprintf(fp,"lb%d:\n",pop());
+			pop_while();
 			break;
 		case 'b':	//BREAK loop
-			fprintf(fp,"JMP lb%d\n",flag_break);
+			fprintf(fp,"JMP lb%d\n",top_while->i);
 			break;
 		case 't':	//CONTINUE loop
-			fprintf(fp,"JMP la%d\n",flag_break);
+			fprintf(fp,"JMP la%d\n",top_while->i);
 			break;
 		case 'f':
 			n=regcount;
