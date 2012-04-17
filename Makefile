@@ -6,3 +6,5 @@ y.tab.c:	apsil.y apsil.h
 		yacc -d apsil.y
 a.out:		lex.yy.c y.tab.c	
 		gcc lex.yy.c y.tab.c -lfl 
+clean:
+	rm -rf *.out *~ y.* lex.*
