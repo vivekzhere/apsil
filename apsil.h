@@ -807,11 +807,13 @@ void install(struct tree *node,int type,int size)
 		temp->type=type;
 		node->type=type;
 		temp->size=size;
-		temp->bind=memcount;
-		while(i<size)
-		{
+		temp->bind=memcount;		
+		if(size==1)
 			fprintf(fp,"PUSH R0\n");
-			i++;
+		else
+		{
+			fprintf(fp,"MOV R%d,SP\nMOV R%d,%d\n",regcount,regcount+1,size);
+			fprintf(fp,"ADD R%d,R%d\nMOV SP,R%d\n",regcount,regcount+1,regcount);
 		}
 		memcount=memcount+size;
 		temp->next=root;
