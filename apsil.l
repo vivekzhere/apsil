@@ -83,29 +83,29 @@ void func(int, char, char*, int);
 			return SYSOPEN;
 			}
 
-"Write"			{
-			func(0,'W',yytext,2);
-			return SYSWRIT;
-			}
-			
-"Seek"			{
-			func(0,'S',yytext,3);
-			return SYSSEEK;
-			}
-
-"Read"			{
-			func(0,'R',yytext,4);
-			return SYSREAD;
-			}
-
 "Close"			{
-			func(0,'L',yytext,5);
+			func(0,'L',yytext,2);
 			return SYSCLOS;
 			}
 
 "Delete"		{
-			func(0,'D',yytext,6);
+			func(0,'D',yytext,3);
 			return SYSDELE;
+			}
+
+"Write"			{
+			func(0,'W',yytext,4);
+			return SYSWRIT;
+			}
+			
+"Seek"			{
+			func(0,'S',yytext,5);
+			return SYSSEEK;
+			}
+
+"Read"			{
+			func(0,'R',yytext,6);
+			return SYSREAD;
 			}
 
 "Fork"			{
@@ -121,6 +121,11 @@ void func(int, char, char*, int);
 "Exit"			{
 			func(0,'E',yytext,9);
 			return SYSEXIT;
+			}
+
+"Halt"			{
+			func(0,'H',yytext,10);
+			return SYSHALT;
 			}
 
 "read"			{

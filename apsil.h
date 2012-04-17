@@ -543,6 +543,27 @@ void codegen(struct tree * root)
 			fprintf(fp,"POP BP\n");
 			fprintf(fp,"POP R%d\n",regcount);
 			break;
+		case 'H':	//Halt syscall
+			n=0;
+			fprintf(fp,"PUSH R0\nPUSH BP\n");
+			while(n<8)
+			{
+				fprintf(fp,"PUSH R%d\n",n);
+				n++;
+			}
+			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
+			fprintf(fp,"MOV BP,SP\nINT 5\n");
+			//Interrupt 
+			fprintf(fp,"POP R0\n");
+			n=7;		
+			while(n>=0)
+			{
+				fprintf(fp,"POP R%d\n",n);
+				n--;
+			}			
+			fprintf(fp,"POP BP\n");
+			fprintf(fp,"POP R%d\n",regcount);
+			break;
 		default:
 			return;
 	}
