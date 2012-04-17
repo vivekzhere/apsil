@@ -8,8 +8,8 @@
 	struct tree *n;
 	struct ArgStruct *arg;
 }
-%token NUM OPER1 OPER2 ID INT STR STRING MAIN BEGN END DECL ENDDECL ASG READ PRINT RELOP LOGOP NEGOP IF ELSE THEN ENDIF WHILE DO ENDWHILE RETURN SYSCREA SYSOPEN SYSWRIT SYSSEEK SYSREAD SYSCLOS SYSDELE SYSFORK SYSEXEC SYSEXIT SYSHALT
-%type<n> stmtlist param stmt retstmt expr ids fID Body SysCall NUM STRING OPER1 OPER2 ID ASG READ PRINT RELOP LOGOP NEGOP IF WHILE RETURN SYSCREA SYSOPEN SYSWRIT SYSSEEK SYSREAD SYSCLOS SYSDELE SYSFORK SYSEXEC SYSEXIT SYSHALT ifpad whilepad
+%token NUM OPER1 OPER2 ID INT STR STRING MAIN BEGN END DECL ENDDECL ASG READ PRINT RELOP LOGOP NEGOP IF ELSE THEN ENDIF WHILE DO ENDWHILE RETURN SYSCREA SYSOPEN SYSWRIT SYSSEEK SYSREAD SYSCLOS SYSDELE SYSFORK SYSEXEC SYSEXIT SYSHALT BREAK CONTINUE
+%type<n> stmtlist param stmt retstmt expr ids fID Body SysCall NUM STRING OPER1 OPER2 ID ASG READ PRINT RELOP LOGOP NEGOP IF WHILE RETURN SYSCREA SYSOPEN SYSWRIT SYSSEEK SYSREAD SYSCLOS SYSDELE SYSFORK SYSEXEC SYSEXIT SYSHALT ifpad whilepad BREAK CONTINUE
 %type<arg> ArgId ArgIdList ArgDecl ArgList fArgList
 %left LOGOP
 %left RELOP  
@@ -176,13 +176,27 @@ stmt:		ids ASG expr ';'	 		{$$=maketree($2,$1,$3,NULL);
 										}
 		|ifpad expr THEN stmtlist ELSE stmtlist ENDIF ';'		{$$=maketree($1,$2,$4,$6);flag_decl--;
 										}
-		|whilepad expr DO stmtlist ENDWHILE ';'				{$$=maketree($1,$2,$4,NULL);flag_decl--;
+		|whilepad expr DO stmtlist ENDWHILE ';'				{$$=maketree($1,$2,$4,NULL);flag_decl--;flag_break=0;
 										}
 		|LDecl					{$$=NULL;
 							}
-		|SYSEXIT '(' ')'			{$$=$1;		
+		|SYSEXIT '(' ')' ';'			{$$=$1;		
 							}
-		|SYSHALT '(' ')'			{$$=$1;		
+		|SYSHALT '(' ')' ';'			{$$=$1;		
+							}
+		|BREAK ';'				{if(flag_break==0)
+							{
+								printf("\n%d: break or continue should be used inside while!!\n",linecount);
+								exit(0);								
+							}
+							$$=$1;
+							}
+		|CONTINUE ';'				{if(flag_break==0)
+							{
+								printf("\n%d: break or continue should be used inside while!!\n",linecount);
+								exit(0);								
+							}
+							$$=$1;
 							}					
 		;
 
@@ -194,6 +208,7 @@ ifpad:		IF					{
 
 whilepad:	WHILE					{
 								flag_decl++;
+								flag_break=1;
 								$$=$1;
 							}
 		;

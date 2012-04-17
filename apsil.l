@@ -138,7 +138,15 @@ void func(int, char, char*, int);
 			return PRINT;
 			}
 
-			
+"break"			{
+			func(2,'b',NULL,-1);
+			return BREAK;
+			}	
+
+"continue"		{
+			func(2,'t',NULL,-1);
+			return CONTINUE;
+			}		
 
 "return"		{
 			func(2,'u',NULL,-1);

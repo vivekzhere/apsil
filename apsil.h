@@ -3,6 +3,7 @@
 #define FALSE 0
 extern int linecount;
 int flag_decl=0;
+int flag_break=0;
 int m=-1,m2=-1,m3=-1; //m-variable type, m2-argtype, m3-returntype of function
 struct tree *funcid=NULL;
 int memcount=768,regcount=0,datacount=512;
@@ -50,7 +51,8 @@ struct tree
 					a-AND		o-OR		x-NOT							
 					C-Create	O-Open		W-Write
 					S-Seek		R-Read		L-Close
-					D-Delete	F-Fork		X-Exec		E-Exit	*/
+					D-Delete	F-Fork		X-Exec		E-Exit	
+					b-break		t-continue*/
 	char *name;
 	int value;
 	struct Gsymbol *Gentry;
@@ -325,6 +327,7 @@ void codegen(struct tree * root)
 			break;
 		case 'w':	//WHILE loop
 			push();
+			flag_break=top->i;
 			fprintf(fp,"la%d:\n",top->i);
 			codegen(root->ptr1);
 			fprintf(fp,"JZ R%d,lb%d\n",regcount-1,top->i);
@@ -332,6 +335,12 @@ void codegen(struct tree * root)
 			codegen(root->ptr2);
 			fprintf(fp,"JMP la%d\n",top->i);
 			fprintf(fp,"lb%d:\n",pop());
+			break;
+		case 'b':	//BREAK loop
+			fprintf(fp,"JMP lb%d\n",flag_break);
+			break;
+		case 't':	//CONTINUE loop
+			fprintf(fp,"JMP la%d\n",flag_break);
 			break;
 		case 'f':
 			n=regcount;
