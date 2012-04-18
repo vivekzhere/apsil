@@ -74,57 +74,57 @@ void func(int, char, char*, int);
 			}
 			
 "Create"		{
-			func(0,'C',yytext,0);
+			func(0,'C',yytext,1);
 			return SYSCREA;
 			}
 
 "Open"			{
-			func(0,'O',yytext,1);
+			func(0,'O',yytext,2);
 			return SYSOPEN;
 			}
 
 "Close"			{
-			func(0,'L',yytext,2);
+			func(0,'L',yytext,3);
 			return SYSCLOS;
 			}
 
 "Delete"		{
-			func(0,'D',yytext,3);
+			func(0,'D',yytext,4);
 			return SYSDELE;
 			}
 
 "Write"			{
-			func(0,'W',yytext,4);
+			func(0,'W',yytext,5);
 			return SYSWRIT;
 			}
 			
 "Seek"			{
-			func(0,'S',yytext,5);
+			func(0,'S',yytext,6);
 			return SYSSEEK;
 			}
 
 "Read"			{
-			func(0,'R',yytext,6);
+			func(0,'R',yytext,7);
 			return SYSREAD;
 			}
 
 "Fork"			{
-			func(0,'F',yytext,7);
+			func(0,'F',yytext,8);
 			return SYSFORK;
 			}
 
 "Exec"			{
-			func(0,'X',yytext,8);
+			func(0,'X',yytext,9);
 			return SYSEXEC;
 			}
 
 "Exit"			{
-			func(0,'E',yytext,9);
+			func(0,'E',yytext,10);
 			return SYSEXIT;
 			}
 
 "Halt"			{
-			func(0,'H',yytext,10);
+			func(0,'H',yytext,0);
 			return SYSHALT;
 			}
 
