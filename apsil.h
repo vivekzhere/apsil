@@ -125,8 +125,8 @@ void filearea()
 	char *bufftemp=(char *) malloc (16);
 	int linecount=0;
 	size_t nbytes;
-	fp3=fopen("./ap.sim","a");
-	fp2=fopen("./ap.sim","r");
+	fp3=fopen("./apcode.esim","a");
+	fp2=fopen("./apcode.esim","r");
 	while(!feof(fp2))
 	{
 		getline(&bufftemp, &nbytes,fp2);
