@@ -73,9 +73,10 @@ The following are the reserved words in APSIL and it cannot be used as  identifi
 
 \begin{tabular}{c c c c c c }
 \kw{read} & \kw{write} & \kw{if} &   \kw{then} &   \kw{else} &   \kw{endif} \\
-\kw{while} &   \kw{do} &   \kw{endwhile} &   \kw{integer} &	\kw{string} & \kw{main} \\
-\kw{return} &    \kw{decl} &		\kw{enddecl}  &  \kw{Create}  &   \kw{Open} &   \kw{Write} \\
-  \kw{Seek}  & \kw{Read} & \kw{Close} &   \kw{Delete}    &  \kw{Fork} & \kw{Exec} \\ \kw{Exit} 
+\kw{while} &   \kw{do} &   \kw{endwhile} &  \kw{break} & \kw{continue} & \kw{integer} \\
+\kw{string} & \kw{main} & \kw{return} &    \kw{decl} &		\kw{enddecl}  &  \kw{Create}  \\
+\kw{Open} &   \kw{Write} & \kw{Seek}  & \kw{Read} & \kw{Close} &   \kw{Delete}    \\
+\kw{Fork} & \kw{Exec} & \kw{Exit} 
 \end{tabular}
 
 
@@ -278,7 +279,15 @@ The APSIL assignment statement assigns the value of an expression to a variable,
 \indent \textbf{endwhile;}  \\
 }
 
+\subsection{Break statement}
+\textbf{Break} statement is a statement which is used in a while loop block. This statement stops the execution of the loop in which it is used and passes the control of execution to the next statement after the loop. This statement cannot be used anywhere else other than while loop. The syntax is as follows\\
 
+\textit{\textbf{break} ;}
+
+\subsection{Continue statement}
+\textbf{Continue} statement is a statement which is also used only in a while loop block. This statement skips the current iteration of the loop and passes the control to the next iteration after checking the loop condition. The syntax is as follows\\
+
+\textit{\textbf{continue} ;}
 
 
 
@@ -392,6 +401,12 @@ memory space of the current process and start its execution. The return value of
 \subsection{Exit}
 This system call is used to terminate the execution of the process which invoked it and remove it from the memory.
 
-\textit{integer \textbf{Exit}();}
+\textit{void \textbf{Exit}();}
+
+
+\subsection{Halt}
+This system call is used to halt the machine.
+
+\textit{void \textbf{Halt}();}
 
 \end{document}
