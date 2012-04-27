@@ -416,8 +416,14 @@ void codegen(struct tree * root)
 			}
 			regcount--;
 			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
-			fprintf(fp,"MOV BP,SP\nINT 1\n");
-			//Interrupt 
+			fprintf(fp,"MOV BP,SP\n");
+			
+			if( root->nodetype == 'C' || root->nodetype=='D')
+				frpintf(fp,"INT 1\n");
+			else
+				fprintf(fp,"INT 2\n");
+			//Interrupt
+			
 			fprintf(fp,"POP R0\n");
 			fprintf(fp,"POP R0\n");	
 			n=7;		
@@ -451,7 +457,11 @@ void codegen(struct tree * root)
 			fprintf(fp,"PUSH R%d\n",regcount-1);
 			regcount--;
 			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
-			fprintf(fp,"MOV BP,SP\nINT 2\n");
+			fprintf(fp,"MOV BP,SP\n");
+			if(root->nodetype == 'W')
+				fprintf(fp,"INT 4\n");
+			else
+				fprintf(fp,"INT 3\n");
 			//Interrupt 
 			fprintf(fp,"POP R0\n");
 			fprintf(fp,"POP R0\n");
@@ -482,7 +492,7 @@ void codegen(struct tree * root)
 			fprintf(fp,"PUSH R%d\n",regcount-1);
 			regcount--;
 			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
-			fprintf(fp,"MOV BP,SP\nINT 2\n");
+			fprintf(fp,"MOV BP,SP\nINT 3\n");
 			//Interrupt 
 			fprintf(fp,"POP R0\n");
 			fprintf(fp,"POP R0\n");
@@ -506,7 +516,7 @@ void codegen(struct tree * root)
 				n++;
 			}
 			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
-			fprintf(fp,"MOV BP,SP\nINT 3\n");
+			fprintf(fp,"MOV BP,SP\nINT 5\n");
 			//Interrupt 
 			fprintf(fp,"POP R0\n");
 			n=7;		
@@ -533,7 +543,7 @@ void codegen(struct tree * root)
 			fprintf(fp,"STRCPY R%d,R%d\n",regcount,regcount-1);
 			regcount--;
 			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
-			fprintf(fp,"MOV BP,SP\nINT 3\n");
+			fprintf(fp,"MOV BP,SP\nINT 6\n");
 			//Interrupt 
 			fprintf(fp,"POP R0\n");
 			fprintf(fp,"POP R0\n");	
@@ -556,7 +566,7 @@ void codegen(struct tree * root)
 				n++;
 			}
 			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
-			fprintf(fp,"MOV BP,SP\nINT 4\n");
+			fprintf(fp,"MOV BP,SP\nINT 7\n");
 			//Interrupt 
 			fprintf(fp,"POP R0\n");
 			n=7;		
@@ -577,7 +587,7 @@ void codegen(struct tree * root)
 				n++;
 			}
 			fprintf(fp,"MOV R0,%d\nPUSH R0\n",root->value);
-			fprintf(fp,"MOV BP,SP\nINT 5\n");
+			fprintf(fp,"MOV BP,SP\nINT 7\n");
 			//Interrupt 
 			fprintf(fp,"POP R0\n");
 			n=7;		
