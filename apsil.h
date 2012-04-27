@@ -419,7 +419,7 @@ void codegen(struct tree * root)
 			fprintf(fp,"MOV BP,SP\n");
 			
 			if( root->nodetype == 'C' || root->nodetype=='D')
-				frpintf(fp,"INT 1\n");
+				fprintf(fp,"INT 1\n");
 			else
 				fprintf(fp,"INT 2\n");
 			//Interrupt
