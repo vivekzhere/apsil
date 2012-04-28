@@ -450,8 +450,6 @@ void codegen(struct tree * root)
 			regcount--;
 			codegen(root->ptr1->ptr3);
 			fprintf(fp,"PUSH R%d\n",regcount-1);
-			fprintf(fp,"MOV R%d,SP\n",regcount);
-			fprintf(fp,"STRCPY R%d,R%d\n",regcount,regcount-1);
 			regcount--;
 			codegen(root->ptr1->ptr3->ptr3);
 			fprintf(fp,"PUSH R%d\n",regcount-1);
@@ -1095,6 +1093,7 @@ struct tree* syscheck(struct tree * a, struct tree * b, int flag)
 				printf("\n%d Type mismatch in system call %s!!\n",linecount,a->name);
 				exit(0);
 			}
+			b->ptr3->ptr1=NULL;
 			a->ptr1=b;
 			break;
 		case 3:		//Seek
