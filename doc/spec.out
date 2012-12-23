@@ -1,40 +1,40 @@
-\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
-\BOOKMARK [1][-]{section.2}{Lexical Elements}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{Comments and White Spaces}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{Keywords}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{Operators and Delimiters}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.4}{Indentifiers}{section.2}% 6
-\BOOKMARK [2][-]{subsection.2.5}{Literals}{section.2}% 7
-\BOOKMARK [1][-]{section.3}{Data Types}{}% 8
-\BOOKMARK [2][-]{subsection.3.1}{Primitive Types}{section.3}% 9
-\BOOKMARK [2][-]{subsection.3.2}{Arrays}{section.3}% 10
-\BOOKMARK [1][-]{section.4}{Declarations and Scope}{}% 11
-\BOOKMARK [2][-]{subsection.4.1}{Global Variables}{section.4}% 12
-\BOOKMARK [2][-]{subsection.4.2}{Function Declaration}{section.4}% 13
-\BOOKMARK [2][-]{subsection.4.3}{Local Variables}{section.4}% 14
-\BOOKMARK [1][-]{section.5}{Function Definition and Main Function}{}% 15
-\BOOKMARK [2][-]{subsection.5.1}{main\(\)}{section.5}% 16
-\BOOKMARK [1][-]{section.6}{Expressions}{}% 17
-\BOOKMARK [2][-]{subsection.6.1}{Arithmetic Expressions}{section.6}% 18
-\BOOKMARK [2][-]{subsection.6.2}{Logical Expressions}{section.6}% 19
-\BOOKMARK [2][-]{subsection.6.3}{Function Call}{section.6}% 20
-\BOOKMARK [1][-]{section.7}{Statements}{}% 21
-\BOOKMARK [2][-]{subsection.7.1}{Assignment Statement}{section.7}% 22
-\BOOKMARK [2][-]{subsection.7.2}{If Statement}{section.7}% 23
-\BOOKMARK [2][-]{subsection.7.3}{While Statement}{section.7}% 24
-\BOOKMARK [2][-]{subsection.7.4}{Break statement}{section.7}% 25
-\BOOKMARK [2][-]{subsection.7.5}{Continue statement}{section.7}% 26
-\BOOKMARK [2][-]{subsection.7.6}{Return statement}{section.7}% 27
-\BOOKMARK [2][-]{subsection.7.7}{Read/Write statements}{section.7}% 28
-\BOOKMARK [1][-]{section.8}{System Calls}{}% 29
-\BOOKMARK [2][-]{subsection.8.1}{Create}{section.8}% 30
-\BOOKMARK [2][-]{subsection.8.2}{Open}{section.8}% 31
-\BOOKMARK [2][-]{subsection.8.3}{Read}{section.8}% 32
-\BOOKMARK [2][-]{subsection.8.4}{Write}{section.8}% 33
-\BOOKMARK [2][-]{subsection.8.5}{Seek}{section.8}% 34
-\BOOKMARK [2][-]{subsection.8.6}{Close}{section.8}% 35
-\BOOKMARK [2][-]{subsection.8.7}{Delete}{section.8}% 36
-\BOOKMARK [2][-]{subsection.8.8}{Fork}{section.8}% 37
-\BOOKMARK [2][-]{subsection.8.9}{Exec}{section.8}% 38
-\BOOKMARK [2][-]{subsection.8.10}{Exit}{section.8}% 39
-\BOOKMARK [2][-]{subsection.8.11}{Halt}{section.8}% 40
+\BOOKMARK [1][-]{section.1}{Introduction}{}
+\BOOKMARK [1][-]{section.2}{Lexical Elements}{}
+\BOOKMARK [2][-]{subsection.2.1}{Comments and White Spaces}{section.2}
+\BOOKMARK [2][-]{subsection.2.2}{Keywords}{section.2}
+\BOOKMARK [2][-]{subsection.2.3}{Operators and Delimiters}{section.2}
+\BOOKMARK [2][-]{subsection.2.4}{Indentifiers}{section.2}
+\BOOKMARK [2][-]{subsection.2.5}{Literals}{section.2}
+\BOOKMARK [1][-]{section.3}{Data Types}{}
+\BOOKMARK [2][-]{subsection.3.1}{Primitive Types}{section.3}
+\BOOKMARK [2][-]{subsection.3.2}{Arrays}{section.3}
+\BOOKMARK [1][-]{section.4}{Declarations and Scope}{}
+\BOOKMARK [2][-]{subsection.4.1}{Global Variables}{section.4}
+\BOOKMARK [2][-]{subsection.4.2}{Function Declaration}{section.4}
+\BOOKMARK [2][-]{subsection.4.3}{Local Variables}{section.4}
+\BOOKMARK [1][-]{section.5}{Function Definition and Main Function}{}
+\BOOKMARK [2][-]{subsection.5.1}{main\(\)}{section.5}
+\BOOKMARK [1][-]{section.6}{Expressions}{}
+\BOOKMARK [2][-]{subsection.6.1}{Arithmetic Expressions}{section.6}
+\BOOKMARK [2][-]{subsection.6.2}{Logical Expressions}{section.6}
+\BOOKMARK [2][-]{subsection.6.3}{Function Call}{section.6}
+\BOOKMARK [1][-]{section.7}{Statements}{}
+\BOOKMARK [2][-]{subsection.7.1}{Assignment Statement}{section.7}
+\BOOKMARK [2][-]{subsection.7.2}{If Statement}{section.7}
+\BOOKMARK [2][-]{subsection.7.3}{While Statement}{section.7}
+\BOOKMARK [2][-]{subsection.7.4}{Break statement}{section.7}
+\BOOKMARK [2][-]{subsection.7.5}{Continue statement}{section.7}
+\BOOKMARK [2][-]{subsection.7.6}{Return statement}{section.7}
+\BOOKMARK [2][-]{subsection.7.7}{Read/Write statements}{section.7}
+\BOOKMARK [1][-]{section.8}{System Calls}{}
+\BOOKMARK [2][-]{subsection.8.1}{Create}{section.8}
+\BOOKMARK [2][-]{subsection.8.2}{Open}{section.8}
+\BOOKMARK [2][-]{subsection.8.3}{Read}{section.8}
+\BOOKMARK [2][-]{subsection.8.4}{Write}{section.8}
+\BOOKMARK [2][-]{subsection.8.5}{Seek}{section.8}
+\BOOKMARK [2][-]{subsection.8.6}{Close}{section.8}
+\BOOKMARK [2][-]{subsection.8.7}{Delete}{section.8}
+\BOOKMARK [2][-]{subsection.8.8}{Fork}{section.8}
+\BOOKMARK [2][-]{subsection.8.9}{Exec}{section.8}
+\BOOKMARK [2][-]{subsection.8.10}{Exit}{section.8}
+\BOOKMARK [2][-]{subsection.8.11}{Halt}{section.8}
