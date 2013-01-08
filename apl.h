@@ -6,7 +6,7 @@ int flag_decl=0;
 int flag_break=0;
 int m=-1, m2=-1, m3=-1; //m-variable type,  m2-argtype,  m3-returntype of function
 struct tree *funcid=NULL;
-int memcount=768, regcount=0, datacount=512;
+int memcount=1536, regcount=0;
 FILE *fp;
 
 struct ArgStruct{
@@ -267,8 +267,7 @@ void codegen(struct tree * root)
 				fprintf(fp, "ADD R%d, R%d\n", regcount-2, regcount-1);
 				regcount--;
 			}
-			if(root->type!=3)			
-				fprintf(fp, "MOV R%d, [R%d]\n", regcount-1, regcount-1);
+			fprintf(fp, "MOV R%d, [R%d]\n", regcount-1, regcount-1);
 			break;
 		case '?':	//IF statement ,  IF-ELSE statements
 			push();
