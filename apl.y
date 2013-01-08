@@ -123,9 +123,7 @@ ArgId:		ID					{
 				
 Mainblock:	 INT fMAIN '(' ')' '{' Body '}'		{codegen($6);
 								fprintf(fp,"OVER\n");
-								fclose(fp);
-								if(Droot!=NULL)
-					 				filearea();						
+								fclose(fp);						
 					 			//printf("%d Lines Compiled\n",linecount);
 								return(0);
 								}
@@ -231,7 +229,7 @@ expr:		expr OPER1 expr				{$$=maketree($2,$1,$3,NULL);
 							}
 		|NUM					{$$=$1;
 							}
-		|STRING					{$$=makedata($1);
+		|STRING					{$$=$1;
 							}
 		|ids					{$$=$1;
 							}
@@ -284,8 +282,6 @@ int main (void)
 {	
 	fp=fopen("./apcode.xsm","w");
 	fprintf(fp,"START\n");
-	fprintf(fp,"MOV SP,768\n");
-	fprintf(fp,"MOV BP,768\n");	
 	return yyparse();
 }
 
