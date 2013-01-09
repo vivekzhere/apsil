@@ -22,7 +22,12 @@
 prog:		GDefblock FDefList Mainblock		{}
 		;
 		
-GDefblock:						{}
+GDefblock:						{
+							fflush(fp);
+							main_pos = ftell(fp);
+							out_linecount++;
+							fprintf(fp,"JMP 00000\n");
+							}
 	
 		|DECL GDefList ENDDECL			{
 							fflush(fp);
