@@ -2,7 +2,7 @@
 #define TRUE 1
 #define FALSE 0
 extern int linecount;
-unsigned long main_pos; //lseek of jump to main
+unsigned long main_pos=-1; //lseek of jump to main
 unsigned long temp_pos; //temporary lseek
 int out_linecount=0; //no of lines of code generated
 int flag_decl=0;

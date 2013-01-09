@@ -5,9 +5,18 @@ integer main()
 	while i<10 do
 		j=0;
 		while j<i do
+			if j==8 then
+				j=j+1;
+				break;
+			endif;
+			if j==7 then
+				j=j+1;
+				break;
+			endif;
 			write(j);
 			j=j+1;
-		endwhile;		
+		endwhile;
+		write(9999);		
 		i=i+1;
 	endwhile;	
 	return 0;
