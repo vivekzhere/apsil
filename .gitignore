@@ -1,5 +1,6 @@
-apsil
+apl
 lex.yy.c
 y.tab.c
 y.tab.h
-apcode.esim
+apcode.xsm
+*~

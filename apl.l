@@ -236,16 +236,6 @@ void func(int, char, char*, int);
 
 
 %%
-char * makestring(char *name)
-{
-	char *temp=strdup(name);
-	int i=0;
-	temp++;
-	while(temp[i]!='"')
-		i++;
-	temp[i]='\0';
-	return temp;	
-}
 void func(int type,char nodetype, char *name, int value)
 {
 	yylval.n=malloc(sizeof(struct tree));
@@ -253,12 +243,7 @@ void func(int type,char nodetype, char *name, int value)
 	yylval.n->nodetype=nodetype;
 	yylval.n->name=NULL;
 	if(name!=NULL)
-	{
-		if(nodetype=='s')
-			yylval.n->name=makestring(name);
-		else
-			yylval.n->name=strdup(name);
-	}		
+		yylval.n->name=strdup(name);
 	yylval.n->value=value;
 	yylval.n->Gentry=NULL;
 	yylval.n->Lentry=NULL;

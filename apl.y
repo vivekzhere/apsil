@@ -1,7 +1,7 @@
 %{
 #include<stdio.h>
 #include<stdlib.h>
-#include "apsil.h"
+#include "apl.h"
 %}
 %union
 {
@@ -24,7 +24,12 @@ prog:		GDefblock FDefList Mainblock		{}
 		
 GDefblock:						{}
 	
-		|DECL GDefList ENDDECL			{fprintf(fp,"JMP main\n");}
+		|DECL GDefList ENDDECL			{
+							fflush(fp);
+							main_pos = ftell(fp);
+							out_linecount++;
+							fprintf(fp,"JMP 00000\n");
+							}
 		;
 		
 GDefList:	GDecl					{}
@@ -122,10 +127,8 @@ ArgId:		ID					{
 		;		
 				
 Mainblock:	 INT fMAIN '(' ')' '{' Body '}'		{codegen($6);
-								fprintf(fp,"OVER\n");
-								fclose(fp);
-								if(Droot!=NULL)
-					 				filearea();						
+								out_linecount++;fprintf(fp,"OVER\n");
+								fclose(fp);						
 					 			//printf("%d Lines Compiled\n",linecount);
 								return(0);
 								}
@@ -134,7 +137,12 @@ Mainblock:	 INT fMAIN '(' ')' '{' Body '}'		{codegen($6);
 fMAIN:		MAIN					{m3=0;
 							memcount=1;
 							funcid=NULL;
-							fprintf(fp,"main:\nPUSH BP\nMOV BP,SP\n"); 
+							fflush(fp);
+							temp_pos = ftell(fp);
+							fseek(fp,main_pos,SEEK_SET);
+							fprintf(fp,"JMP %05d",out_linecount*2);
+							fseek(fp,temp_pos,SEEK_SET);
+							out_linecount+=2; fprintf(fp,"PUSH BP\nMOV BP,SP\n"); 
 							}
 		;
 
@@ -231,7 +239,7 @@ expr:		expr OPER1 expr				{$$=maketree($2,$1,$3,NULL);
 							}
 		|NUM					{$$=$1;
 							}
-		|STRING					{$$=makedata($1);
+		|STRING					{$$=$1;
 							}
 		|ids					{$$=$1;
 							}
@@ -282,10 +290,8 @@ SysCall:	SYSCREA '(' param ')'			{$$=syscheck($1,$3,1);
 
 int main (void)
 {	
-	fp=fopen("./apcode.esim","w");
-	fprintf(fp,"START\n");
-	fprintf(fp,"MOV SP,768\n");
-	fprintf(fp,"MOV BP,768\n");	
+	fp=fopen("./apcode.xsm","wb");
+	out_linecount++; fprintf(fp,"START\n");
 	return yyparse();
 }
 
