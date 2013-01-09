@@ -5,7 +5,11 @@ integer main()
 	while i<10 do
 		j=0;
 		while j<i do
-			if j==5 then
+			if j==8 then
+				j=j+1;
+				break;
+			endif;
+			if j==7 then
 				j=j+1;
 				break;
 			endif;
