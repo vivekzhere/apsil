@@ -2,6 +2,9 @@
 #define TRUE 1
 #define FALSE 0
 extern int linecount;
+unsigned long main_pos; //lseek of jump to main
+unsigned long temp_pos; //temporary lseek
+int out_linecount=0; //no of lines of code generated
 int flag_decl=0;
 int flag_break=0;
 int m=-1, m2=-1, m3=-1; //m-variable type,  m2-argtype,  m3-returntype of function
@@ -60,6 +63,8 @@ int labelcount=0;
 struct label
 {
 	int i;
+	unsigned long pos1,pos2;
+	char instr1[32],instr2[32];
 	struct label *next; 
 };
 struct label *top=NULL, *top_while=NULL;
@@ -110,57 +115,57 @@ void codegen(struct tree * root)
 		case '<':
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp, "LT R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "LT R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;
 		case '>':
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp, "GT R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "GT R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;
 		case 'e':
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp, "EQ R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "EQ R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;
 		case 'l':
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp, "LE R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "LE R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;
 		case 'g':
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp, "GE R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "GE R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;
 		case '!':
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp, "NE R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "NE R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;
 		case 'a':	//AND operator
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp, "MUL R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "MUL R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;
 		case 'o':	//OR operator
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp, "ADD R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "ADD R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;
 		case 'x':	//NOT operator
 			codegen(root->ptr1);
-			fprintf(fp, "MOV R%d, 1\n", regcount);
+			out_linecount++; fprintf(fp, "MOV R%d, 1\n", regcount);
 			regcount++;
-			fprintf(fp, "SUB R%d, R%d\n", regcount-1, regcount-2);
-			fprintf(fp, "MOV R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "SUB R%d, R%d\n", regcount-1, regcount-2);
+			out_linecount++; fprintf(fp, "MOV R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;		
 		case 'n':	//statement list
@@ -170,154 +175,183 @@ void codegen(struct tree * root)
 		case '+':
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp, "ADD R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "ADD R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;
 		case '-':
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp, "SUB R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "SUB R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;
 		case '*':
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp, "MUL R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "MUL R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;
 		case '/':
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp, "DIV R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "DIV R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;
 		case '%':
 			codegen(root->ptr1);			
 			codegen(root->ptr2);
-			fprintf(fp, "MOD R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "MOD R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 			break;
 		case '=':			
 			if(root->ptr1->Gentry!=NULL)
-				fprintf(fp, "MOV R%d, %d\n", regcount, root->ptr1->Gentry->bind);
+			{
+				out_linecount++;
+				fprintf(fp, "MOV R%d, %d\n", regcount, root->ptr1->Gentry->bind);			
+			}
 			else
 			{
-				fprintf(fp, "MOV R%d, %d\n", regcount, root->ptr1->Lentry->bind);
-				fprintf(fp, "MOV R%d, BP\n", regcount+1);
-				fprintf(fp, "ADD R%d, R%d\n", regcount, regcount+1);
+				out_linecount++; fprintf(fp, "MOV R%d, %d\n", regcount, root->ptr1->Lentry->bind);
+				out_linecount++; fprintf(fp, "MOV R%d, BP\n", regcount+1);
+				out_linecount++; fprintf(fp, "ADD R%d, R%d\n", regcount, regcount+1);
 			}			
 			regcount++;
 			if(root->ptr1->ptr1!=NULL)
 			{
 				codegen(root->ptr1->ptr1);
-				fprintf(fp, "ADD R%d, R%d\n", regcount-2, regcount-1);
+				out_linecount++; fprintf(fp, "ADD R%d, R%d\n", regcount-2, regcount-1);
 				regcount--;
 			}
 			codegen(root->ptr2);
-			fprintf(fp, "MOV [R%d], R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "MOV [R%d], R%d\n", regcount-2, regcount-1);
 			regcount=regcount-2;
 			break;
 		case 'r':	//READ
 			if(root->ptr1->Gentry!=NULL)
+			{
+				out_linecount++;
 				fprintf(fp, "MOV R%d, %d\n", regcount, root->ptr1->Gentry->bind);
+			}
 			else
 			{
-				fprintf(fp, "MOV R%d, %d\n", regcount, root->ptr1->Lentry->bind);
-				fprintf(fp, "MOV R%d, BP\n", regcount+1);
-				fprintf(fp, "ADD R%d, R%d\n", regcount, regcount+1);
+				out_linecount++; fprintf(fp, "MOV R%d, %d\n", regcount, root->ptr1->Lentry->bind);
+				out_linecount++; fprintf(fp, "MOV R%d, BP\n", regcount+1);
+				out_linecount++; fprintf(fp, "ADD R%d, R%d\n", regcount, regcount+1);
 			}
 			regcount++;
 			if(root->ptr1->ptr1!=NULL)
 			{
 				codegen(root->ptr1->ptr1);
-				fprintf(fp, "ADD R%d, R%d\n", regcount-2, regcount-1);
+				out_linecount++; fprintf(fp, "ADD R%d, R%d\n", regcount-2, regcount-1);
 				regcount--;
 			}
-			fprintf(fp, "IN R%d\n", regcount);
+			out_linecount++; fprintf(fp, "IN R%d\n", regcount);
 			regcount++;
-			fprintf(fp, "MOV [R%d], R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "MOV [R%d], R%d\n", regcount-2, regcount-1);
 			regcount=regcount-2;
 			break;
 		case 'p':	//PRINT
 			codegen(root->ptr1);
-			fprintf(fp, "OUT R%d\n", regcount-1);
+			out_linecount++; fprintf(fp, "OUT R%d\n", regcount-1);
 			regcount--;
 			break;
 		case 'c':	//constants
-			fprintf(fp, "MOV R%d, %d\n", regcount, root->value);
+			out_linecount++; fprintf(fp, "MOV R%d, %d\n", regcount, root->value);
 			regcount++;
 			break;
 		case 's':	//string constants
-			fprintf(fp, "MOV R%d, %s\n", regcount, root->name);
+			out_linecount++; fprintf(fp, "MOV R%d, %s\n", regcount, root->name);
 			regcount++;
 			break;
 		case 'i':			//variables and array variables
 			if(root->Gentry!=NULL)
+			{
+				out_linecount++;
 				fprintf(fp, "MOV R%d, %d\n", regcount, root->Gentry->bind);
+			}
 			else
 			{
-				fprintf(fp, "MOV R%d, %d\n", regcount, root->Lentry->bind);
-				fprintf(fp, "MOV R%d, BP\n", regcount+1);
-				fprintf(fp, "ADD R%d, R%d\n", regcount, regcount+1);
+				out_linecount++; fprintf(fp, "MOV R%d, %d\n", regcount, root->Lentry->bind);
+				out_linecount++; fprintf(fp, "MOV R%d, BP\n", regcount+1);
+				out_linecount++; fprintf(fp, "ADD R%d, R%d\n", regcount, regcount+1);
 			}
 			regcount++;
 			if(root->ptr1!=NULL)
 			{
 				codegen(root->ptr1);
-				fprintf(fp, "ADD R%d, R%d\n", regcount-2, regcount-1);
+				out_linecount++; fprintf(fp, "ADD R%d, R%d\n", regcount-2, regcount-1);
 				regcount--;
 			}
-			fprintf(fp, "MOV R%d, [R%d]\n", regcount-1, regcount-1);
+			out_linecount++; fprintf(fp, "MOV R%d, [R%d]\n", regcount-1, regcount-1);
 			break;
 		case '?':	//IF statement ,  IF-ELSE statements
 			push();
 			codegen(root->ptr1);
-			fprintf(fp, "JZ R%d, la%d\n", regcount-1, top->i);
+			fflush(fp);
+			top->pos1 = ftell(fp);
+			bzero(top->instr1,32);
+			out_linecount++;
+			fprintf(fp, "JZ R%d, 00000\n", regcount-1);			
+			sprintf(top->instr1, "JZ R%d,", regcount-1);
+						
 			regcount--;
 			codegen(root->ptr2);
-			fprintf(fp, "JMP lb%d\n", top->i);
-			fprintf(fp, "la%d:\n", top->i);
+			fflush(fp);
+			top->pos2 = ftell(fp);
+			bzero(top->instr2,32);
+			out_linecount++;
+			fprintf(fp, "JMP 00000\n");
+			sprintf(top->instr2, "JMP");	
+				fflush(fp);
+				temp_pos = ftell(fp);
+				fseek(fp,top->pos1,SEEK_SET);
+				fprintf(fp,"%s %05d",top->instr1,out_linecount*2);
+				fseek(fp,temp_pos,SEEK_SET);
 			codegen(root->ptr3);
-			fprintf(fp, "lb%d:\n", pop());
+				fflush(fp);
+				temp_pos = ftell(fp);
+				fseek(fp,top->pos2,SEEK_SET);
+				fprintf(fp,"%s %05d",top->instr2,out_linecount*2);
+				fseek(fp,temp_pos,SEEK_SET);
+			pop();
 			break;
 		case 'w':	//WHILE loop
 			push();
 			push_while(top->i);
-			fprintf(fp, "la%d:\n", top->i);
+			out_linecount++; fprintf(fp, "la%d:\n", top->i);
 			codegen(root->ptr1);
-			fprintf(fp, "JZ R%d, lb%d\n", regcount-1, top->i);
+			out_linecount++; fprintf(fp, "JZ R%d, lb%d\n", regcount-1, top->i);
 			regcount--;
 			codegen(root->ptr2);
-			fprintf(fp, "JMP la%d\n", top->i);
-			fprintf(fp, "lb%d:\n", pop());
+			out_linecount++; fprintf(fp, "JMP la%d\n", top->i);
+			out_linecount++; fprintf(fp, "lb%d:\n", pop());
 			pop_while();
 			break;
 		case 'b':	//BREAK loop
-			fprintf(fp, "JMP lb%d\n", top_while->i);
+			out_linecount++; fprintf(fp, "JMP lb%d\n", top_while->i);
 			break;
 		case 't':	//CONTINUE loop
-			fprintf(fp, "JMP la%d\n", top_while->i);
+			out_linecount++; fprintf(fp, "JMP la%d\n", top_while->i);
 			break;
 		case 'f':
 			n=regcount;
 			while(regcount>0)
 			{
-				fprintf(fp, "PUSH R%d\n", regcount-1);
+				out_linecount++; fprintf(fp, "PUSH R%d\n", regcount-1);
 				regcount--;
 			}
 			pushargs(root->ptr1);
-			fprintf(fp, "PUSH R0\nCALL fn%d\n", root->Gentry->bind);
-			fprintf(fp, "POP R%d\n", n);			
+			out_linecount+=2; fprintf(fp, "PUSH R0\nCALL fn%d\n", root->Gentry->bind);
+			out_linecount++; fprintf(fp, "POP R%d\n", n);			
 			if(root->Gentry->type==3)
 			{
-				fprintf(fp, "MOV R%d, 1\n", n);
-				fprintf(fp, "MOV R%d, SP\n", n+1);
-				fprintf(fp, "ADD R%d, R%d\n", n, n+1);
+				out_linecount++; fprintf(fp, "MOV R%d, 1\n", n);
+				out_linecount++; fprintf(fp, "MOV R%d, SP\n", n+1);
+				out_linecount++; fprintf(fp, "ADD R%d, R%d\n", n, n+1);
 			}			
 			popargs(root->ptr1, root->Gentry->arglist, n);
 			while(regcount<n)
 			{
-				fprintf(fp, "POP R%d\n", regcount);
+				out_linecount++; fprintf(fp, "POP R%d\n", regcount);
 				regcount++;
 			}
 			regcount++;			
@@ -326,12 +360,18 @@ void codegen(struct tree * root)
 			if(funcid!=NULL) //NOT MAIN
 			{
 				codegen(root->ptr1);
-				fprintf(fp, "MOV R%d, -2\nMOV R%d, BP\nADD R%d, R%d\n", regcount, regcount+1, regcount, regcount+1);
+				out_linecount+=3; fprintf(fp, "MOV R%d, -2\nMOV R%d, BP\nADD R%d, R%d\n", regcount, regcount+1, regcount, regcount+1);
 				regcount++;
 				if(funcid->type==3)
+				{
+					out_linecount++;
 					fprintf(fp, "STRCPY R%d, R%d\n", regcount-1, regcount-2);
+				}
 				else
+				{
+					out_linecount++;
 					fprintf(fp, "MOV [R%d], R%d\n", regcount-1, regcount-2);
+				}
 				regcount=regcount-2;
 				endfn();
 			}			
@@ -341,201 +381,213 @@ void codegen(struct tree * root)
 		case 'L':	//Close syscall
 		case 'D':	//Delete syscall
 			n=0;
-			fprintf(fp, "PUSH R0\nPUSH BP\n");
+			out_linecount+=2; fprintf(fp, "PUSH R0\nPUSH BP\n");
 			while(n<8)
 			{
-				fprintf(fp, "PUSH R%d\n", n);
+				out_linecount++; fprintf(fp, "PUSH R%d\n", n);
 				n++;
 			}
 			codegen(root->ptr1);
-			fprintf(fp, "PUSH R%d\n", regcount-1);
+			out_linecount++; fprintf(fp, "PUSH R%d\n", regcount-1);
 			if(root->ptr1->type==3)
 			{
-				fprintf(fp, "MOV R%d, SP\n", regcount);
-				fprintf(fp, "STRCPY R%d, R%d\n", regcount, regcount-1);
+				out_linecount++; fprintf(fp, "MOV R%d, SP\n", regcount);
+				out_linecount++; fprintf(fp, "STRCPY R%d, R%d\n", regcount, regcount-1);
 			}
 			regcount--;
-			fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
-			fprintf(fp, "MOV BP, SP\n");
+			out_linecount+=2; fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
+			out_linecount++; fprintf(fp, "MOV BP, SP\n");
 			
 			if( root->nodetype == 'C' || root->nodetype=='D')
+			{
+				out_linecount++;
 				fprintf(fp, "INT 1\n");
+			}
 			else
+			{
+				out_linecount++;
 				fprintf(fp, "INT 2\n");
+			}
 			//Interrupt
 			
-			fprintf(fp, "POP R0\n");
-			fprintf(fp, "POP R0\n");	
+			out_linecount++; fprintf(fp, "POP R0\n");
+			out_linecount++; fprintf(fp, "POP R0\n");	
 			n=7;		
 			while(n>=0)
 			{
-				fprintf(fp, "POP R%d\n", n);
+				out_linecount++; fprintf(fp, "POP R%d\n", n);
 				n--;
 			}			
-			fprintf(fp, "POP BP\n");
-			fprintf(fp, "POP R%d\n", regcount);
+			out_linecount++; fprintf(fp, "POP BP\n");
+			out_linecount++; fprintf(fp, "POP R%d\n", regcount);
 			regcount++;			
 			break;
 		case 'W':	//Write syscall
 		case 'R':	//Read syscall
 			n=0;
-			fprintf(fp, "PUSH R0\nPUSH BP\n");
+			out_linecount+=2; fprintf(fp, "PUSH R0\nPUSH BP\n");
 			while(n<8)
 			{
-				fprintf(fp, "PUSH R%d\n", n);
+				out_linecount++; fprintf(fp, "PUSH R%d\n", n);
 				n++;
 			}
 			codegen(root->ptr1);
-			fprintf(fp, "PUSH R%d\n", regcount-1);
+			out_linecount++; fprintf(fp, "PUSH R%d\n", regcount-1);
 			regcount--;
 			codegen(root->ptr1->ptr3);
-			fprintf(fp, "PUSH R%d\n", regcount-1);
+			out_linecount++; fprintf(fp, "PUSH R%d\n", regcount-1);
 			regcount--;
 			codegen(root->ptr1->ptr3->ptr3);
-			fprintf(fp, "PUSH R%d\n", regcount-1);
+			out_linecount++; fprintf(fp, "PUSH R%d\n", regcount-1);
 			regcount--;
-			fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
-			fprintf(fp, "MOV BP, SP\n");
+			out_linecount+=2; fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
+			out_linecount++; fprintf(fp, "MOV BP, SP\n");
 			if(root->nodetype == 'W')
+			{
+				out_linecount++;
 				fprintf(fp, "INT 4\n");
+			}
 			else
+			{
+				out_linecount++;
 				fprintf(fp, "INT 3\n");
+			}
 			//Interrupt 
-			fprintf(fp, "POP R0\n");
-			fprintf(fp, "POP R0\n");
-			fprintf(fp, "POP R0\n");
-			fprintf(fp, "POP R0\n");	
+			out_linecount++; fprintf(fp, "POP R0\n");
+			out_linecount++; fprintf(fp, "POP R0\n");
+			out_linecount++; fprintf(fp, "POP R0\n");
+			out_linecount++; fprintf(fp, "POP R0\n");	
 			n=7;		
 			while(n>=0)
 			{
-				fprintf(fp, "POP R%d\n", n);
+				out_linecount++; fprintf(fp, "POP R%d\n", n);
 				n--;
 			}			
-			fprintf(fp, "POP BP\n");
-			fprintf(fp, "POP R%d\n", regcount);
+			out_linecount++; fprintf(fp, "POP BP\n");
+			out_linecount++; fprintf(fp, "POP R%d\n", regcount);
 			regcount++;
 			break;
 		case 'S':	//Seek syscall
 			n=0;
-			fprintf(fp, "PUSH R0\nPUSH BP\n");
+			out_linecount+=2; fprintf(fp, "PUSH R0\nPUSH BP\n");
 			while(n<8)
 			{
-				fprintf(fp, "PUSH R%d\n", n);
+				out_linecount++; fprintf(fp, "PUSH R%d\n", n);
 				n++;
 			}
 			codegen(root->ptr1);
-			fprintf(fp, "PUSH R%d\n", regcount-1);
+			out_linecount++; fprintf(fp, "PUSH R%d\n", regcount-1);
 			regcount--;
 			codegen(root->ptr1->ptr3);
-			fprintf(fp, "PUSH R%d\n", regcount-1);
+			out_linecount++; fprintf(fp, "PUSH R%d\n", regcount-1);
 			regcount--;
-			fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
-			fprintf(fp, "MOV BP, SP\nINT 3\n");
+			out_linecount+=2; fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
+			out_linecount+=2; fprintf(fp, "MOV BP, SP\nINT 3\n");
 			//Interrupt 
-			fprintf(fp, "POP R0\n");
-			fprintf(fp, "POP R0\n");
-			fprintf(fp, "POP R0\n");	
+			out_linecount++; fprintf(fp, "POP R0\n");
+			out_linecount++; fprintf(fp, "POP R0\n");
+			out_linecount++; fprintf(fp, "POP R0\n");	
 			n=7;		
 			while(n>=0)
 			{
-				fprintf(fp, "POP R%d\n", n);
+				out_linecount++; fprintf(fp, "POP R%d\n", n);
 				n--;
 			}			
-			fprintf(fp, "POP BP\n");
-			fprintf(fp, "POP R%d\n", regcount);
+			out_linecount++; fprintf(fp, "POP BP\n");
+			out_linecount++; fprintf(fp, "POP R%d\n", regcount);
 			regcount++;
 			break;				
 		case 'F':	//Fork syscall
 			n=0;
-			fprintf(fp, "PUSH R0\nPUSH BP\n");
+			out_linecount+=2; fprintf(fp, "PUSH R0\nPUSH BP\n");
 			while(n<8)
 			{
-				fprintf(fp, "PUSH R%d\n", n);
+				out_linecount++; fprintf(fp, "PUSH R%d\n", n);
 				n++;
 			}
-			fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
-			fprintf(fp, "MOV BP, SP\nINT 5\n");
+			out_linecount+=2; fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
+			out_linecount+=2; fprintf(fp, "MOV BP, SP\nINT 5\n");
 			//Interrupt 
-			fprintf(fp, "POP R0\n");
+			out_linecount++; fprintf(fp, "POP R0\n");
 			n=7;		
 			while(n>=0)
 			{
-				fprintf(fp, "POP R%d\n", n);
+				out_linecount++; fprintf(fp, "POP R%d\n", n);
 				n--;
 			}			
-			fprintf(fp, "POP BP\n");
-			fprintf(fp, "POP R%d\n", regcount);
+			out_linecount++; fprintf(fp, "POP BP\n");
+			out_linecount++; fprintf(fp, "POP R%d\n", regcount);
 			regcount++;
 			break;
 		case 'X':	//Exec syscall
 			n=0;
-			fprintf(fp, "PUSH R0\nPUSH BP\n");
+			out_linecount+=2; fprintf(fp, "PUSH R0\nPUSH BP\n");
 			while(n<8)
 			{
-				fprintf(fp, "PUSH R%d\n", n);
+				out_linecount++; fprintf(fp, "PUSH R%d\n", n);
 				n++;
 			}
 			codegen(root->ptr1);
-			fprintf(fp, "PUSH R%d\n", regcount-1);
-			fprintf(fp, "MOV R%d, SP\n", regcount);
-			fprintf(fp, "STRCPY R%d, R%d\n", regcount, regcount-1);
+			out_linecount++; fprintf(fp, "PUSH R%d\n", regcount-1);
+			out_linecount++; fprintf(fp, "MOV R%d, SP\n", regcount);
+			out_linecount++; fprintf(fp, "STRCPY R%d, R%d\n", regcount, regcount-1);
 			regcount--;
-			fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
-			fprintf(fp, "MOV BP, SP\nINT 6\n");
+			out_linecount+=2; fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
+			out_linecount+=2; fprintf(fp, "MOV BP, SP\nINT 6\n");
 			//Interrupt 
-			fprintf(fp, "POP R0\n");
-			fprintf(fp, "POP R0\n");	
+			out_linecount++; fprintf(fp, "POP R0\n");
+			out_linecount++; fprintf(fp, "POP R0\n");	
 			n=7;		
 			while(n>=0)
 			{
-				fprintf(fp, "POP R%d\n", n);
+				out_linecount++; fprintf(fp, "POP R%d\n", n);
 				n--;
 			}			
-			fprintf(fp, "POP BP\n");
-			fprintf(fp, "POP R%d\n", regcount);
+			out_linecount++; fprintf(fp, "POP BP\n");
+			out_linecount++; fprintf(fp, "POP R%d\n", regcount);
 			regcount++;
 			break;
 		case 'E':	//Exit syscall
 			n=0;
-			fprintf(fp, "PUSH R0\nPUSH BP\n");
+			out_linecount+=2; fprintf(fp, "PUSH R0\nPUSH BP\n");
 			while(n<8)
 			{
-				fprintf(fp, "PUSH R%d\n", n);
+				out_linecount++; fprintf(fp, "PUSH R%d\n", n);
 				n++;
 			}
-			fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
-			fprintf(fp, "MOV BP, SP\nINT 7\n");
+			out_linecount+=2; fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
+			out_linecount+=2; fprintf(fp, "MOV BP, SP\nINT 7\n");
 			//Interrupt 
-			fprintf(fp, "POP R0\n");
+			out_linecount++; fprintf(fp, "POP R0\n");
 			n=7;		
 			while(n>=0)
 			{
-				fprintf(fp, "POP R%d\n", n);
+				out_linecount++; fprintf(fp, "POP R%d\n", n);
 				n--;
 			}			
-			fprintf(fp, "POP BP\n");
-			fprintf(fp, "POP R%d\n", regcount);
+			out_linecount++; fprintf(fp, "POP BP\n");
+			out_linecount++; fprintf(fp, "POP R%d\n", regcount);
 			break;
 		case 'H':	//Halt syscall
 			n=0;
-			fprintf(fp, "PUSH R0\nPUSH BP\n");
+			out_linecount+=2; fprintf(fp, "PUSH R0\nPUSH BP\n");
 			while(n<8)
 			{
-				fprintf(fp, "PUSH R%d\n", n);
+				out_linecount++; fprintf(fp, "PUSH R%d\n", n);
 				n++;
 			}
-			fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
-			fprintf(fp, "MOV BP, SP\nINT 7\n");
+			out_linecount+=2; fprintf(fp, "MOV R0, %d\nPUSH R0\n", root->value);
+			out_linecount+=2; fprintf(fp, "MOV BP, SP\nINT 7\n");
 			//Interrupt 
-			fprintf(fp, "POP R0\n");
+			out_linecount++; fprintf(fp, "POP R0\n");
 			n=7;		
 			while(n>=0)
 			{
-				fprintf(fp, "POP R%d\n", n);
+				out_linecount++; fprintf(fp, "POP R%d\n", n);
 				n--;
 			}			
-			fprintf(fp, "POP BP\n");
-			fprintf(fp, "POP R%d\n", regcount);
+			out_linecount++; fprintf(fp, "POP BP\n");
+			out_linecount++; fprintf(fp, "POP R%d\n", regcount);
 			break;
 		default:
 			return;
@@ -548,11 +600,11 @@ void pushargs(struct tree *a)
 	if(a->ptr3!=NULL)
 		pushargs(a->ptr3);
 	codegen(a);
-	fprintf(fp, "PUSH R%d\n", regcount-1);	
+	out_linecount++; fprintf(fp, "PUSH R%d\n", regcount-1);	
 	if(a->type==3)
 	{
-		fprintf(fp, "MOV R%d, SP\n", regcount);
-		fprintf(fp, "STRCPY R%d, R%d\n", regcount, regcount-1);
+		out_linecount++; fprintf(fp, "MOV R%d, SP\n", regcount);
+		out_linecount++; fprintf(fp, "STRCPY R%d, R%d\n", regcount, regcount-1);
 	}
 	regcount--;	
 }
@@ -561,35 +613,40 @@ void popargs(struct tree *a, struct ArgStruct *arg, int n)
 	int regcount=n+1;
 	if(a==NULL)
 		return;
-	fprintf(fp, "POP R%d\n", regcount);
+	out_linecount++; fprintf(fp, "POP R%d\n", regcount);
 	//printf(" %s %s-%d\n", a->name, arg->name, arg->passtype);
 	if(arg->passtype==1)	//call by reference
 	{
 		regcount++;
 		if(a->Gentry!=NULL)
+		{
+			out_linecount++;
 			fprintf(fp, "MOV R%d, %d\n", regcount, a->Gentry->bind);
+		}
 		else
 		{
-			fprintf(fp, "MOV R%d, %d\n", regcount, a->Lentry->bind);
-			fprintf(fp, "MOV R%d, BP\n", regcount+1);
-			fprintf(fp, "ADD R%d, R%d\n", regcount, regcount+1);
+			out_linecount++; fprintf(fp, "MOV R%d, %d\n", regcount, a->Lentry->bind);
+			out_linecount++; fprintf(fp, "MOV R%d, BP\n", regcount+1);
+			out_linecount++; fprintf(fp, "ADD R%d, R%d\n", regcount, regcount+1);
 		}			
 		regcount++;
 		if(a->ptr1!=NULL)
 		{
 			codegen(a->ptr1);
-			fprintf(fp, "ADD R%d, R%d\n", regcount-2, regcount-1);
+			out_linecount++; fprintf(fp, "ADD R%d, R%d\n", regcount-2, regcount-1);
 			regcount--;
 		}		
 		if(arg->type==3)
 		{
-			fprintf(fp, "MOV R%d, 1\n", regcount);
-			fprintf(fp, "MOV R%d, SP\n", regcount+1);
-			fprintf(fp, "ADD R%d, R%d\n", regcount, regcount+1);
-			fprintf(fp, "STRCPY R%d, R%d\n", regcount-1, regcount);
+			out_linecount++; fprintf(fp, "MOV R%d, 1\n", regcount);
+			out_linecount++; fprintf(fp, "MOV R%d, SP\n", regcount+1);
+			out_linecount++; fprintf(fp, "ADD R%d, R%d\n", regcount, regcount+1);
+			out_linecount++; fprintf(fp, "STRCPY R%d, R%d\n", regcount-1, regcount);
 		}
 		else
-			fprintf(fp, "MOV [R%d], R%d\n", regcount-1, regcount-2);
+		{
+			out_linecount++; fprintf(fp, "MOV [R%d], R%d\n", regcount-1, regcount-2);
+		}
 		regcount=regcount-2;	
 	}	
 	popargs(a->ptr3, arg->next, n);
@@ -602,10 +659,10 @@ void endfn()
 	{
 		//printf("%s-%d\n", temp->name, temp->bind);
 		if(temp->bind>0)
-			fprintf(fp, "POP R%d\n", regcount);
+			out_linecount++; fprintf(fp, "POP R%d\n", regcount);
 		temp=temp->next;
 	}
-	fprintf(fp, "POP BP\nRET\n");	
+	out_linecount+=2; fprintf(fp, "POP BP\nRET\n");	
 }
 struct Gsymbol * lookup(char * name)
 {
@@ -803,11 +860,14 @@ void install(struct tree *node, int type, int size)
 		temp->size=size;
 		temp->bind=memcount;		
 		if(size==1)
+		{
+			out_linecount++;
 			fprintf(fp, "PUSH R0\n");
+		}
 		else
 		{
-			fprintf(fp, "MOV R%d, SP\nMOV R%d, %d\n", regcount, regcount+1, size);
-			fprintf(fp, "ADD R%d, R%d\nMOV SP, R%d\n", regcount, regcount+1, regcount);
+			out_linecount+=2; fprintf(fp, "MOV R%d, SP\nMOV R%d, %d\n", regcount, regcount+1, size);
+			out_linecount+=2; fprintf(fp, "ADD R%d, R%d\nMOV SP, R%d\n", regcount, regcount+1, regcount);
 		}
 		memcount=memcount+size;
 		temp->next=root;
@@ -834,7 +894,7 @@ void Linstall(struct tree *node, int type, int size)
 		temp->name=node->name;
 		temp->type=type;
 		node->type=type;
-		fprintf(fp, "PUSH R0\n");
+		out_linecount++; fprintf(fp, "PUSH R0\n");
 		temp->bind=memcount;
 		memcount=memcount+size;
 		temp->next=Lroot;
@@ -907,11 +967,11 @@ void fdefcheck(struct tree *a, struct ArgStruct *b, int type)
 		exit(0);
 	}
 	a->Gentry->size=1; //flag set to one. ie fuction defined
-	fprintf(fp, "fn%d:\n", labelcount);
+	out_linecount++; fprintf(fp, "fn%d:\n", labelcount);
 	a->Gentry->bind=labelcount;
 	labelcount++;
-	fprintf(fp, "PUSH BP\n");
-	fprintf(fp, "MOV BP, SP\n"); 
+	out_linecount++; fprintf(fp, "PUSH BP\n");
+	out_linecount++; fprintf(fp, "MOV BP, SP\n"); 
 }
 void arglistinstall(struct tree *a)
 {
