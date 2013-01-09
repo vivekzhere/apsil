@@ -60,12 +60,19 @@ struct tree
 };
 
 int labelcount=0;
+struct jmp_point
+{
+	unsigned long pos;
+	char instr[32];
+	struct jmp_point *next;
+};
 struct label
 {
 	int i;
 	unsigned long pos1,pos2;
 	char instr1[32],instr2[32];
-	struct label *next; 
+	struct label *next;
+	struct jmp_point *points; 
 };
 struct label *top=NULL, *top_while=NULL;
 void push()
@@ -78,6 +85,7 @@ void push()
 	bzero(temp->instr1,32);
 	bzero(temp->instr2,32);
 	temp->next=top;
+	temp->points=NULL;
 	top=temp; 
 	labelcount++;
 }
@@ -101,6 +109,7 @@ void push_while(int n)
 	bzero(temp->instr1,32);
 	bzero(temp->instr2,32);
 	temp->next=top_while;
+	temp->points=NULL;
 	top_while=temp;
 }
 void pop_while()
@@ -109,6 +118,31 @@ void pop_while()
 	temp=top_while;
 	top_while=top_while->next;
 	free(temp);
+}
+void add_jmp_point(char instr[32])
+{
+	struct jmp_point *temp;
+	temp=malloc(sizeof(struct jmp_point)); 
+	fflush(fp);
+	temp->pos = ftell(fp);
+	strcpy(temp->instr,instr);
+	temp->next = top_while->points;
+	top_while->points = temp;	
+}
+void use_jmp_points(struct jmp_point *root)
+{
+	if(root == NULL)
+		return;
+	else
+	{
+		fflush(fp);
+		temp_pos = ftell(fp);
+		fseek(fp,root->pos,SEEK_SET);
+		fprintf(fp,"%s %05d",root->instr,out_linecount*2);
+		fseek(fp,temp_pos,SEEK_SET);
+		use_jmp_points(root->next);
+		free(root);
+	}
 }
 void pushargs(struct tree *);
 void popargs(struct tree *, struct ArgStruct *, int);
@@ -323,13 +357,13 @@ void codegen(struct tree * root)
 			push();
 			push_while(top->i);
 			top->pos1=out_linecount*2;
+			top_while->pos1=out_linecount*2;
 			codegen(root->ptr1);
 			fflush(fp);
 			top->pos2 = ftell(fp);
 			out_linecount++;
 			fprintf(fp, "JZ R%d, 00000\n", regcount-1);
 			sprintf(top->instr2, "JZ R%d,", regcount-1);
-			//fprintf(fp, "JZ R%d, lb%d\n", regcount-1, top->i);
 			regcount--;
 			codegen(root->ptr2);
 			out_linecount++;
@@ -339,14 +373,18 @@ void codegen(struct tree * root)
 			fseek(fp,top->pos2,SEEK_SET);
 			fprintf(fp,"%s %05d",top->instr2,out_linecount*2);
 			fseek(fp,temp_pos,SEEK_SET);
-			pop();
+			use_jmp_points(top_while->points);
 			pop_while();
+			pop();			
 			break;
 		case 'b':	//BREAK loop
-			out_linecount++; fprintf(fp, "JMP lb%d\n", top_while->i);
+			add_jmp_point("JMP");
+			out_linecount++;
+			fprintf(fp, "JMP 00000\n");
 			break;
 		case 't':	//CONTINUE loop
-			out_linecount++; fprintf(fp, "JMP la%d\n", top_while->i);
+			out_linecount++;
+			fprintf(fp, "JMP %ld\n", top_while->pos1);
 			break;
 		case 'f':
 			n=regcount;
